@@ -13,6 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CommentService {
+
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
 
@@ -33,6 +34,10 @@ public class CommentService {
 
     public List<Comment> findAll () {
         return commentMapper.toList(commentRepository.findAll());
+    }
+
+    public boolean isCreator (String username, long commentId) {
+        return commentRepository.isCreator(username, commentId);
     }
 
 }

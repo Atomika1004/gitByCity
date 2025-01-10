@@ -40,6 +40,7 @@ public class PointOfInterestController {
     }
 
     @PutMapping(value = "update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("@pointOfInterestService.isCreator(authentication.name, #pointOfInterest.id)")
     public PointOfInterest updatePointOfInterest(@RequestBody PointOfInterest pointOfInterest) {
         return pointOfInterestService.update(pointOfInterest);
     }

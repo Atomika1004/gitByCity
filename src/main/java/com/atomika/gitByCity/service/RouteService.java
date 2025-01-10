@@ -101,4 +101,8 @@ public class RouteService {
         Route route = routeMapper.entityToDto(routeRepository.findById(routeId).orElseThrow(EntityNotFoundException::new));
         routeMapper.entityToDto(routeRepository.save(routeMapper.dtoToEntity(route)));
     }
+
+    public boolean isCreator (String username, long routeId) {
+        return routeRepository.isCreator(username, routeId);
+    }
 }

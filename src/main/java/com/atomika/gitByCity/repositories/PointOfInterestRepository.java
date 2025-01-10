@@ -16,6 +16,6 @@ public interface PointOfInterestRepository extends CrudRepository<PointOfInteres
     List<PointOfInterestEntity> findAll();
 
 
-    @Query("SELECT COUNT(p) > 0 FROM PointOfInterestEntity p WHERE p.client.credential.username = :username AND p.id = :pointOfInterestId ")
-    public boolean isCreator (String username, long pointOfInterestId);
+    @Query("SELECT COUNT(p) > 0 FROM PointOfInterestEntity p WHERE p.client.credential.username = :username AND p.id = :pointOfInterestId")
+    boolean isCreator (String username, long pointOfInterestId);
 }

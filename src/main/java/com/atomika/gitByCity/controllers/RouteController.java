@@ -4,6 +4,7 @@ import com.atomika.gitByCity.dto.Route;
 import com.atomika.gitByCity.service.RouteService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,11 +32,13 @@ public class RouteController {
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("@routeService.isCreator(authentication.name, #id)")
     public Long deleteRoute(@PathVariable("id") long id) {
         return routeService.delete(id);
     }
 
     @PutMapping("update/{id}")
+    @PreAuthorize("@routeService.isCreator(authentication.name, #route.id)")
     public Route updateRoute(@RequestBody Route route) {
          return routeService.update(route);
     }

@@ -16,4 +16,6 @@ public interface RouteRepository extends JpaRepository<RouteEntity, Long > {
 
     RouteEntity findById(long id);
 
+    @Query("SELECT COUNT(r) > 0 FROM RouteEntity r WHERE r.client.credential.username = :username AND r.id = :routeId")
+    boolean isCreator (String username, long routeId);
 }
