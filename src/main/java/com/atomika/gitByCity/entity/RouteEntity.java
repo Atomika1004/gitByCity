@@ -41,6 +41,12 @@ public class RouteEntity {
     @OneToMany(mappedBy = "route", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<CommentEntity> comments = new ArrayList<>();
 
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "route_id")
+    @OrderBy("id ASC")
+    List<AttachmentEntity> images = new ArrayList<>();
+
 //    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    List<RouteEntity> variations;
 

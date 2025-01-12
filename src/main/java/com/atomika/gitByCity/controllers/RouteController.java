@@ -45,12 +45,7 @@ public class RouteController {
     }
 
     @PostMapping(value = "/{routeId}/like", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Long addLike(@PathVariable Long routeId, @RequestParam Long clientId) {
-        return routeService.addLike(routeId, clientId);
-    }
-
-    @DeleteMapping(value = "/{routeId}/dislike", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Long deleteLike(@PathVariable Long routeId, @RequestParam Long clientId) {
-        return routeService.deleteLike(routeId, clientId);
+    public Long addLike(@PathVariable Long routeId, @RequestParam String clientUsername) {
+        return routeService.addLike(routeId, clientUsername);
     }
 }

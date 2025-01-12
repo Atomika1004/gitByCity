@@ -15,6 +15,7 @@ public class Route {
     private List<Long> likes;
     private List<Long> pointOfInterestRoutesDto;
     private List<Comment> comments;
+    private List<String> images;
     //private List<Route> variationsDto;
     //private Route routeDto;
 }

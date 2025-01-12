@@ -1,9 +1,15 @@
 package com.atomika.gitByCity.service;
 
+import com.atomika.gitByCity.controllers.AuthorizationController;
 import com.atomika.gitByCity.dto.Client;
 import com.atomika.gitByCity.dto.mapper.ClientMapper;
+import com.atomika.gitByCity.dto.mapper.PointOfInterestMapper;
+import com.atomika.gitByCity.dto.mapper.RouteMapper;
 import com.atomika.gitByCity.entity.ClientEntity;
 import com.atomika.gitByCity.repositories.ClientRepository;
+import com.atomika.gitByCity.repositories.PointOfInterestRepository;
+import com.atomika.gitByCity.repositories.RouteRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,29 +19,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClientService {
 
-    private final ClientRepository clientRepository;
-    private final ClientMapper clientMapper;
+    private final PointOfInterestRepository pointOfInterestRepository;
+    private final PointOfInterestMapper pointOfInterestMapper;
+    private final RouteMapper routeMapper;
+    private final RouteRepository routeRepository;
 
-//    public Client create (Client client) {
-//        return clientMapper.entityToDto(
-//                clientRepository.save(clientMapper.dtoToEntity(client)));
-//    }
-//
-//    public Client update (Client client) {
-//        return clientMapper.entityToDto(
-//                clientRepository.save(clientMapper.dtoToEntity(client)));
-//    }
-//
-//    public Long delete (Long id) {
-//        clientRepository.deleteById(id);
-//        return id;
-//    }
-//
-//    public List<Client> findAll() {
-//        return clientMapper.toList(clientRepository.findAll());
-//    }
-//
-//    public Client findById(Long id) {
-//        return clientMapper.entityToDto(clientRepository.findById(id).orElse(null));
-//    }
+    @Transactional
+    public Client getClientForProfile() {
+        return Client.builder().
+                createdPointOfInterest(pointOfInterestMapper.toList(pointOfInterestRepository.
+                        findListPointsCreatedByClient(AuthorizationController.getCurrentUsername()))).
+                estimatedPointOfInterest(pointOfInterestMapper.toList(pointOfInterestRepository.
+                        findListLikesFromPointByClient(AuthorizationController.getCurrentUsername()))).
+                createdRoute(routeMapper.toList(routeRepository.
+                        findListRoutesCreatedByClient(AuthorizationController.getCurrentUsername()))).
+                estimatedRoute(routeMapper.toList(routeRepository.
+                        findListLikesFromRoutesByClient(AuthorizationController.getCurrentUsername()))).
+                build();
+    }
 }

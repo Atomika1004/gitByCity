@@ -5,6 +5,7 @@ import com.atomika.gitByCity.dto.Route;
 import com.atomika.gitByCity.dto.mapper.RouteMapper;
 
 import com.atomika.gitByCity.entity.ClientEntity;
+import com.atomika.gitByCity.entity.PointOfInterestEntity;
 import com.atomika.gitByCity.entity.RouteEntity;
 import com.atomika.gitByCity.repositories.ClientRepository;
 import com.atomika.gitByCity.repositories.RouteRepository;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Objects;
 
 
 @Slf4j
@@ -53,19 +55,25 @@ public class RouteService {
         return routeMapper.toList(routeRepository.findAll());
     }
 
-    //todo уточнить про комментарии
-    @Transactional
-    public Long addLike(Long routeId, Long clientId) {
+    public Long addLike(Long routeId, String clientName) {
         RouteEntity routeEntity = routeRepository.findById(routeId).orElse(null);
+        Long clientId = clientRepository.findClientIdByUsername(clientName);
+
         ClientEntity clientEntity = clientRepository.findById(clientId).orElse(null);
         if (routeEntity == null || clientEntity == null) {
             return null;
         }
         else {
-            clientEntity.getLikedRoutes().add(routeEntity);
-            routeEntity.getLikes().add(clientEntity);
-            clientRepository.save(clientEntity);
-
+            boolean isCreator = clientEntity.getLikedRoutes().stream().
+                    anyMatch(point -> Objects.equals(point.getId(), routeId));
+            if (isCreator) {
+                deleteLike(routeId, clientId);
+            }
+            else {
+                clientEntity.getLikedRoutes().add(routeEntity);
+                routeEntity.getLikes().add(clientEntity);
+                clientRepository.save(clientEntity);
+            }
             List<ClientEntity> list = routeEntity.getLikes();
             if(!list.isEmpty()) {
                 return (long) list.size();
@@ -76,25 +84,16 @@ public class RouteService {
         }
     }
 
-    @Transactional
-    public Long deleteLike(Long routeId, Long clientId) {
+    public void deleteLike(Long routeId, Long clientId) {
         RouteEntity routeEntity = routeRepository.findById(routeId).orElse(null);
         ClientEntity clientEntity = clientRepository.findById(clientId).orElse(null);
         if (routeEntity == null || clientEntity == null) {
-            return null;
+            return;
         }
         else {
             clientEntity.getLikedRoutes().remove(routeEntity);
             routeEntity.getLikes().remove(clientEntity);
             clientRepository.save(clientEntity);
-
-            List<ClientEntity> list = routeEntity.getLikes();
-            if(!list.isEmpty()) {
-                return (long) list.size();
-            }
-            else {
-                return null;
-            }
         }
     }
 

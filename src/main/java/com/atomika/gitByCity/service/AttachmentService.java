@@ -38,35 +38,4 @@ public class AttachmentService {
     public List<Attachment> findAll() {
         return attachmentMapper.toList(attachmentRepository.findAll());
     }
-
-//    @Transactional
-//    public Attachment uploadImage(MultipartFile file, Long pointOfInterestId) throws IOException {
-//        Attachment attachment = Attachment.builder()
-//                .name(file.getOriginalFilename())
-//                .pointOfInterestId(pointOfInterestId)
-//                .type(file.getContentType())
-//                .imageData(ImageUtil.compressImage(file.getBytes()))
-//                .build();
-//
-//        AttachmentEntity savedEntity = attachmentRepository.save(attachmentMapper.dtoToEntity(attachment));
-//        return attachmentMapper.entityToDto(savedEntity);
-//    }
-
-
-//    @Transactional
-//    public Attachment getInfoByImageByName(String name) {
-//        Attachment dbImage = attachmentMapper.entityToDto(attachmentRepository.findByName(name));
-//
-//        return Attachment.builder()
-//                .name(dbImage.getName())
-//                .type(dbImage.getType())
-//                .imageData(ImageUtil.decompressImage(dbImage.getImageData())).build();
-//
-//    }
-//
-//    @Transactional
-//    public byte[] getImage(String name) {
-//        Attachment dbImage = attachmentMapper.entityToDto(attachmentRepository.findByName(name));
-//        return ImageUtil.decompressImage(dbImage.getImageData());
-//    }
 }

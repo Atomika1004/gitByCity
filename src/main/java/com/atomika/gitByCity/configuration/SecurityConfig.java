@@ -44,7 +44,7 @@ public class SecurityConfig {
                     return corsConfig;
                 }))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request.requestMatchers("api/login").permitAll()
+                .authorizeHttpRequests(request -> request.requestMatchers("api/login", "api/registration").permitAll()
                         .anyRequest().authenticated())
                 // Send a 401 error response if user is not authentic.
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))

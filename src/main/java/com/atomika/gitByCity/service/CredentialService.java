@@ -13,27 +13,4 @@ import java.util.List;
 public class CredentialService {
     private final CredentialRepository credentialRepository;
     private final CredentialMapper credentialMapper;
-
-//    public Credential create (Credential credential) {
-//        return credentialMapper.entityToDto(
-//                credentialRepository.save(credentialMapper.dtoToEntity(credential)));
-//    }
-//
-//    public Credential update (Credential credential) {
-//        return credentialMapper.entityToDto(
-//                credentialRepository.save(credentialMapper.dtoToEntity(credential)));
-//    }
-//
-//    public Long delete (Long id) {
-//        credentialRepository.deleteById(id);
-//        return id;
-//    }
-//
-//    public List<Credential> findAll() {
-//        return credentialMapper.toList(credentialRepository.findAll());
-//    }
-//
-//    public Credential findById(Long id) {
-//        return credentialMapper.entityToDto(credentialRepository.findById(id).get());
-//    }
 }

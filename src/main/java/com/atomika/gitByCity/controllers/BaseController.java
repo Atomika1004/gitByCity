@@ -4,6 +4,13 @@ import com.atomika.gitByCity.dto.Client;
 import com.atomika.gitByCity.dto.Credential;
 import com.atomika.gitByCity.dto.PointOfInterest;
 import com.atomika.gitByCity.dto.Route;
+import com.atomika.gitByCity.dto.mapper.ClientMapper;
+import com.atomika.gitByCity.dto.mapper.PointOfInterestMapper;
+import com.atomika.gitByCity.dto.mapper.RouteMapper;
+import com.atomika.gitByCity.entity.ClientEntity;
+import com.atomika.gitByCity.repositories.ClientRepository;
+import com.atomika.gitByCity.repositories.PointOfInterestRepository;
+import com.atomika.gitByCity.repositories.RouteRepository;
 import com.atomika.gitByCity.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -14,44 +21,19 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/base")
+@RequestMapping("api/base/client")
 public class BaseController {
-    private final CredentialService credentialService;
-    private final AdminService adminService;
+
     private final ClientService clientService;
-    private final PointOfInterestService pointOfInterestService;
-    private final RouteService routeService;
 
     @GetMapping("check")
     public String sayHello() {
         return "Hello" + new Date();
     }
 
-//    @GetMapping()
-//    public List<Credential> getAllCredential(){
-//        return credentialService.findAll();
-//    }
-//
-//
-//    @GetMapping("client")
-//    public List<Client> getAllClient(){
-//        return clientService.findAll();
-//    }
-
-//    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    public Client createClient(@RequestBody Client client) {
-//        return clientService.create(client);
-//    }
-
-
-
-//    @GetMapping("routes")
-//    public List<Route> getAllRoute(){
-//        return routeService.findAll();
-//    }
-//
-//    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    public Route createRoute(@RequestBody Route route) {
-//        return routeService.create(route);
-//    }
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public Client getClient() {
+        return clientService.getClientForProfile();
+    }
 }

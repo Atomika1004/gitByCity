@@ -10,12 +10,15 @@ import java.util.List;
 
 public interface RouteRepository extends JpaRepository<RouteEntity, Long > {
 
-
     @EntityGraph(attributePaths = "pointsOfInterest")
     List<RouteEntity> findAll();
 
-    RouteEntity findById(long id);
-
     @Query("SELECT COUNT(r) > 0 FROM RouteEntity r WHERE r.client.credential.username = :username AND r.id = :routeId")
     boolean isCreator (String username, long routeId);
+
+    @Query("SELECT r FROM RouteEntity r JOIN r.likes c WHERE c.credential.username=:username")
+    List<RouteEntity> findListLikesFromRoutesByClient (String username);
+
+    @Query("SELECT r FROM RouteEntity r WHERE r.client.credential.username =:username")
+    List<RouteEntity> findListRoutesCreatedByClient(String username);
 }

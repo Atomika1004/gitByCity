@@ -28,7 +28,8 @@ public class PointOfInterestEntity {
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-            @JoinColumn(name = "point_of_interest_id")
+    @JoinColumn(name = "point_of_interest_id")
+    @OrderBy("id ASC")
     List<AttachmentEntity> images = new ArrayList<>();
 
     private double longitude;

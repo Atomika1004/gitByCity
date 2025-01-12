@@ -56,6 +56,7 @@ public interface PointOfInterestMapper {
         return images.stream().map(image -> {
             AttachmentEntity attachmentEntity = new AttachmentEntity();
             attachmentEntity.setImageUrl(image);
+            attachmentEntity.setRouteId(null);
             return attachmentEntity;
         }).collect(Collectors.toList());
     }
