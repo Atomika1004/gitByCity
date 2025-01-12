@@ -11,7 +11,7 @@ public class Route {
     private Long id;
     private String name;
     private String description;
-    private String clientId;
+    private Long clientId;
     private List<Long> likes;
     private List<Long> pointOfInterestRoutesDto;
     private List<Comment> comments;

@@ -26,7 +26,8 @@ public class RouteService {
     private final ClientRepository clientRepository;
 
     @Transactional
-    public Route create(Route route) {
+    public Route create(Route route, String clientName) {
+        route.setClientId(clientRepository.findClientIdByUsername(clientName));
        return routeMapper.entityToDto(routeRepository.save(routeMapper.dtoToEntity(route)));
     }
 

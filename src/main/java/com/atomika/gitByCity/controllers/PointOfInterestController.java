@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @Slf4j
 @RestController
 @AllArgsConstructor
@@ -30,7 +31,8 @@ public class PointOfInterestController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public PointOfInterest createPointOfInterest(@RequestBody PointOfInterest pointOfInterest) {
-        return pointOfInterestService.create(pointOfInterest);
+        String clientName = AuthorizationController.getCurrentUsername();
+        return pointOfInterestService.create(pointOfInterest, clientName);
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,12 +48,9 @@ public class PointOfInterestController {
     }
 
     @PostMapping(value = "/{pointId}/like", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Long addLike(@PathVariable Long pointId, @RequestParam Long clientId) {
-        return pointOfInterestService.addLike(pointId, clientId);
+    public Long addLike(@PathVariable Long pointId, @RequestParam String clientUsername) {
+        return pointOfInterestService.addLike(pointId, clientUsername);
     }
 
-    @DeleteMapping(value = "/{pointId}/dislike", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Long deleteLike(@PathVariable Long pointId, @RequestParam Long clientId) {
-        return pointOfInterestService.deleteLike(pointId, clientId);
-    }
+
 }

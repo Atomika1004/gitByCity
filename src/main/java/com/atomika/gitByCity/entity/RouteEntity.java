@@ -20,6 +20,7 @@ public class RouteEntity {
     @Column(unique = true,nullable = false)
     private String name;
 
+    @Column(length = 1000)
     private String description;
 
     @ManyToOne

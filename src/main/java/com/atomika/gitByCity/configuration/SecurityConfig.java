@@ -2,7 +2,6 @@ package com.atomika.gitByCity.configuration;
 
 import com.atomika.gitByCity.service.auth.JwtAuthenticationEntryPoint;
 import com.atomika.gitByCity.service.auth.JwtFilter;
-import com.atomika.gitByCity.service.auth.JwtUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

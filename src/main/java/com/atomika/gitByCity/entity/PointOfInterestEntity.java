@@ -23,6 +23,8 @@ public class PointOfInterestEntity {
     @Column(unique = true,nullable = false)
     private String name;
 
+
+    @Column(length = 1000)
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

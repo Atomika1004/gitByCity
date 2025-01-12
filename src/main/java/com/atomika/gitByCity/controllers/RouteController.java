@@ -28,7 +28,8 @@ public class RouteController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Route addRoute(@RequestBody Route route) {
-        return routeService.create(route);
+        String clientName = AuthorizationController.getCurrentUsername();
+        return routeService.create(route, clientName);
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -11,11 +11,13 @@ import com.atomika.gitByCity.repositories.PointOfInterestRouteRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -30,7 +32,8 @@ public class PointOfInterestService {
     private final RouteService routeService;
 
 
-    public PointOfInterest create (PointOfInterest pointOfInterest) {
+    public PointOfInterest create (PointOfInterest pointOfInterest, String clientName) {
+        pointOfInterest.setClientId(clientRepository.findClientIdByUsername(clientName));
         return pointOfInterestMapper.entityToDto(
                 pointOfInterestRepository.save(pointOfInterestMapper.dtoToEntity(pointOfInterest)));
     }
@@ -39,7 +42,6 @@ public class PointOfInterestService {
         return pointOfInterestMapper.entityToDto(
                 pointOfInterestRepository.save(pointOfInterestMapper.dtoToEntity(pointOfInterest)));
     }
-
 
     public Long delete (Long id) {
         List<PointOfInterestRoute> list = pointOfInterestRouteMapper.toList(pointOfInterestRouteRepository.findByPointOfInterestId(id));
@@ -62,18 +64,26 @@ public class PointOfInterestService {
     }
 
 
-    @Transactional
-    public Long addLike(Long routeId, Long clientId) {
-        PointOfInterestEntity pointOfInterestEntity = pointOfInterestRepository.findById(routeId).orElse(null);
+
+    public Long addLike(Long pointOfInterestId, String clientName) {
+        PointOfInterestEntity pointOfInterestEntity = pointOfInterestRepository.findById(pointOfInterestId).orElse(null);
+        Long clientId = clientRepository.findClientIdByUsername(clientName);
+
         ClientEntity clientEntity = clientRepository.findById(clientId).orElse(null);
         if (pointOfInterestEntity == null || clientEntity == null) {
             return null;
         }
         else {
-            clientEntity.getLikedPoints().add(pointOfInterestEntity);
-            pointOfInterestEntity.getLikes().add(clientEntity);
-            clientRepository.save(clientEntity);
-
+            boolean isCreator = clientEntity.getLikedPoints().stream().
+                    anyMatch(point -> Objects.equals(point.getId(), pointOfInterestId));
+            if (isCreator) {
+                deleteLike(pointOfInterestId, clientId);
+            }
+            else {
+                clientEntity.getLikedPoints().add(pointOfInterestEntity);
+                pointOfInterestEntity.getLikes().add(clientEntity);
+                clientRepository.save(clientEntity);
+            }
             List<ClientEntity> list = pointOfInterestEntity.getLikes();
             if(!list.isEmpty()) {
                 return (long) list.size();
@@ -84,25 +94,16 @@ public class PointOfInterestService {
         }
     }
 
-    @Transactional
-    public Long deleteLike(Long routeId, Long clientId) {
-        PointOfInterestEntity pointOfInterestEntity = pointOfInterestRepository.findById(routeId).orElse(null);
+    public void deleteLike(Long pointOfInterestId, Long clientId) {
+        PointOfInterestEntity pointOfInterestEntity = pointOfInterestRepository.findById(pointOfInterestId).orElse(null);
         ClientEntity clientEntity = clientRepository.findById(clientId).orElse(null);
         if (pointOfInterestEntity == null || clientEntity == null) {
-            return null;
+            return;
         }
         else {
             clientEntity.getLikedPoints().remove(pointOfInterestEntity);
             pointOfInterestEntity.getLikes().remove(clientEntity);
             clientRepository.save(clientEntity);
-
-            List<ClientEntity> list = pointOfInterestEntity.getLikes();
-            if(!list.isEmpty()) {
-                return (long) list.size();
-            }
-            else {
-                return null;
-            }
         }
     }
 
