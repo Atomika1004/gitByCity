@@ -23,10 +23,12 @@ public class ClientService {
     private final PointOfInterestMapper pointOfInterestMapper;
     private final RouteMapper routeMapper;
     private final RouteRepository routeRepository;
+    private final ClientRepository clientRepository;
 
     @Transactional
     public Client getClientForProfile() {
         return Client.builder().
+                fio(clientRepository.findFioByUsername(AuthorizationController.getCurrentUsername())).
                 createdPointOfInterest(pointOfInterestMapper.toList(pointOfInterestRepository.
                         findListPointsCreatedByClient(AuthorizationController.getCurrentUsername()))).
                 estimatedPointOfInterest(pointOfInterestMapper.toList(pointOfInterestRepository.
@@ -36,5 +38,10 @@ public class ClientService {
                 estimatedRoute(routeMapper.toList(routeRepository.
                         findListLikesFromRoutesByClient(AuthorizationController.getCurrentUsername()))).
                 build();
+    }
+
+    @Transactional
+    public Long getClientId() {
+        return clientRepository.findClientIdByUsername(AuthorizationController.getCurrentUsername());
     }
 }

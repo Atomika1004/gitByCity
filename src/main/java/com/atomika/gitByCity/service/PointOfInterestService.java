@@ -32,15 +32,31 @@ public class PointOfInterestService {
     private final RouteService routeService;
 
 
-    public PointOfInterest create (PointOfInterest pointOfInterest, String clientName) {
-        pointOfInterest.setClientId(clientRepository.findClientIdByUsername(clientName));
-        return pointOfInterestMapper.entityToDto(
-                pointOfInterestRepository.save(pointOfInterestMapper.dtoToEntity(pointOfInterest)));
+    public ResponseForCreateOrUpdate create (PointOfInterest pointOfInterest, String clientName) {
+        boolean isExists = pointOfInterestRepository.findPointOfInterestEntityByName(pointOfInterest.getName());
+        if (isExists) {
+            return ResponseForCreateOrUpdate.builder().message("Точка с таким названием уже существует").
+                    success(false).build();
+        }else {
+            pointOfInterest.setClientId(clientRepository.findClientIdByUsername(clientName));
+            pointOfInterestMapper.entityToDto(
+                    pointOfInterestRepository.save(pointOfInterestMapper.dtoToEntity(pointOfInterest)));
+            return ResponseForCreateOrUpdate.builder().message("Точка успешно создана, поздравляю!!!").
+                    success(true).build();
+        }
     }
 
-    public PointOfInterest update (PointOfInterest pointOfInterest) {
-        return pointOfInterestMapper.entityToDto(
-                pointOfInterestRepository.save(pointOfInterestMapper.dtoToEntity(pointOfInterest)));
+    public ResponseForCreateOrUpdate update (PointOfInterest pointOfInterest) {
+        boolean isExists = pointOfInterestRepository.findPointOfInterestEntityByName(pointOfInterest.getName());
+        if (isExists) {
+            return ResponseForCreateOrUpdate.builder().message("Точка с таким названием уже существует").
+                    success(false).build();
+        }else {
+            pointOfInterestMapper.entityToDto(
+                    pointOfInterestRepository.save(pointOfInterestMapper.dtoToEntity(pointOfInterest)));
+            return ResponseForCreateOrUpdate.builder().message("Точка успешно сохранена, поздравляю!!!").
+                    success(true).build();
+        }
     }
 
     public Long delete (Long id) {

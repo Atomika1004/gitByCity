@@ -1,6 +1,7 @@
 package com.atomika.gitByCity.controllers;
 
 import com.atomika.gitByCity.dto.PointOfInterest;
+import com.atomika.gitByCity.dto.ResponseForCreateOrUpdate;
 import com.atomika.gitByCity.service.PointOfInterestService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +30,8 @@ public class PointOfInterestController {
         return pointOfInterestService.findById(id);
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public PointOfInterest createPointOfInterest(@RequestBody PointOfInterest pointOfInterest) {
+    @PostMapping()
+    public ResponseForCreateOrUpdate createPointOfInterest(@RequestBody PointOfInterest pointOfInterest) {
         String clientName = AuthorizationController.getCurrentUsername();
         return pointOfInterestService.create(pointOfInterest, clientName);
     }
@@ -41,9 +42,9 @@ public class PointOfInterestController {
        return pointOfInterestService.delete(id);
     }
 
-    @PutMapping(value = "update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "update/{id}")
     @PreAuthorize("@pointOfInterestService.isCreator(authentication.name, #pointOfInterest.id)")
-    public PointOfInterest updatePointOfInterest(@RequestBody PointOfInterest pointOfInterest) {
+    public ResponseForCreateOrUpdate updatePointOfInterest(@RequestBody PointOfInterest pointOfInterest) {
         return pointOfInterestService.update(pointOfInterest);
     }
 

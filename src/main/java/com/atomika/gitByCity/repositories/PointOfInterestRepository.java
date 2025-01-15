@@ -25,4 +25,7 @@ public interface PointOfInterestRepository extends CrudRepository<PointOfInteres
     @Query("SELECT p FROM PointOfInterestEntity p WHERE p.client.credential.username = :username")
     List<PointOfInterestEntity> findListPointsCreatedByClient(String username);
 
+    @Query("SELECT COUNT(p) > 0 FROM PointOfInterestEntity p WHERE p.name = :name")
+    boolean findPointOfInterestEntityByName(String name);
+
 }

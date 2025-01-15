@@ -15,6 +15,7 @@ public class PointOfInterestRouteService {
     private final PointOfInterestRouteRepository pointOfInterestRouteRepository;
     private final PointOfInterestRouteMapper pointOfInterestRouteMapper;
 
+
     public PointOfInterestRoute create (PointOfInterestRoute pointOfInterestRoute) {
         return pointOfInterestRouteMapper.entityToDto(
                 pointOfInterestRouteRepository.save(pointOfInterestRouteMapper.dtoToEntity(pointOfInterestRoute)));

@@ -1,5 +1,6 @@
 package com.atomika.gitByCity.controllers;
 
+import com.atomika.gitByCity.dto.ResponseForCreateOrUpdate;
 import com.atomika.gitByCity.dto.Route;
 import com.atomika.gitByCity.service.RouteService;
 import lombok.AllArgsConstructor;
@@ -26,8 +27,8 @@ public class RouteController {
         return routeService.findById(id);
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Route addRoute(@RequestBody Route route) {
+    @PostMapping()
+    public ResponseForCreateOrUpdate addRoute(@RequestBody Route route) {
         String clientName = AuthorizationController.getCurrentUsername();
         return routeService.create(route, clientName);
     }
@@ -40,7 +41,7 @@ public class RouteController {
 
     @PutMapping("update/{id}")
     @PreAuthorize("@routeService.isCreator(authentication.name, #route.id)")
-    public Route updateRoute(@RequestBody Route route) {
+    public ResponseForCreateOrUpdate updateRoute(@RequestBody Route route) {
          return routeService.update(route);
     }
 

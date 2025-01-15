@@ -22,5 +22,6 @@ public interface ClientRepository extends CrudRepository<ClientEntity, Long> {
     @Query("SELECT c FROM ClientEntity c WHERE c.credential.username = :username")
     Optional<ClientEntity> findClientByUsername(String username);
 
-    //List<ClientEntity> findClientEntitiesByRouteId(Long routeId);
+    @Query("SELECT c.fio FROM ClientEntity c WHERE c.credential.username = :username")
+    String findFioByUsername(String username);
 }

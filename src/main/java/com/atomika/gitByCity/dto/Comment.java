@@ -12,8 +12,6 @@ public class Comment {
     private Long id;
     private Long clientId;
     private Long routeId;
-    //private String path;
+    private Long pointOfInterestId;
     private String text;
-    //private Date date;
-    //private List<Attachment> imagesDto;
 }

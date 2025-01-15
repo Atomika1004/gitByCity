@@ -1,5 +1,6 @@
 package com.atomika.gitByCity.service;
 
+import com.atomika.gitByCity.dto.ResponseForCreateOrUpdate;
 import com.atomika.gitByCity.dto.Route;
 
 import com.atomika.gitByCity.dto.mapper.RouteMapper;
@@ -28,14 +29,30 @@ public class RouteService {
     private final ClientRepository clientRepository;
 
     @Transactional
-    public Route create(Route route, String clientName) {
-        route.setClientId(clientRepository.findClientIdByUsername(clientName));
-       return routeMapper.entityToDto(routeRepository.save(routeMapper.dtoToEntity(route)));
+    public ResponseForCreateOrUpdate create(Route route, String clientName) {
+        boolean isExists = routeRepository.findRouteEntityByName(route.getName());
+        if (isExists) {
+            return ResponseForCreateOrUpdate.builder().message("Маршрут с таким названием уже существует").
+                    success(false).build();
+        }else {
+            route.setClientId(clientRepository.findClientIdByUsername(clientName));
+            routeMapper.entityToDto(routeRepository.save(routeMapper.dtoToEntity(route)));
+            return ResponseForCreateOrUpdate.builder().message("Маршрут успешно создан, поздравляю!!!").
+                    success(true).build();
+        }
     }
 
     @Transactional
-    public Route update(Route route) {
-        return routeMapper.entityToDto(routeRepository.save(routeMapper.dtoToEntity(route)));
+    public ResponseForCreateOrUpdate update(Route route) {
+        boolean isExists = routeRepository.findRouteEntityByName(route.getName());
+        if (isExists) {
+            return ResponseForCreateOrUpdate.builder().message("Маршрут с таким названием уже существует").
+                    success(false).build();
+        }else {
+            routeMapper.entityToDto(routeRepository.save(routeMapper.dtoToEntity(route)));
+            return ResponseForCreateOrUpdate.builder().message("Маршрут успешно сохранен, поздравляю!!!").
+                    success(true).build();
+        }
     }
 
     @Transactional

@@ -47,5 +47,8 @@ public class PointOfInterestEntity {
 
     @OneToMany(mappedBy = "pointOfInterest",cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<PointOfInterestRouteEntity> routes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "pointOfInterest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<CommentEntity> comments = new ArrayList<>();
 }
 

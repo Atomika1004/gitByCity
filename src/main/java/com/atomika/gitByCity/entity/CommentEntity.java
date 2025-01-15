@@ -19,29 +19,29 @@ public class CommentEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "route_id", nullable = false, updatable = false, insertable = false)
+    @ManyToOne()
+    @JoinColumn(name = "route_id", nullable = true, updatable = false, insertable = false)
     private RouteEntity route;
 
     @Column(name = "route_id")
     private Long routeId;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "client_id", nullable = false, updatable = false, insertable = false)
     private ClientEntity client;
 
     @Column(name = "client_id")
     private Long clientId;
 
-//    @Column(nullable = false)
-//    private String path;
+    @ManyToOne()
+    @JoinColumn(name = "point_of_interest_id", nullable = true, updatable = false, insertable = false)
+    private PointOfInterestEntity pointOfInterest;
 
-    @Column(nullable = false)
+    @Column(name = "point_of_interest_id")
+    private Long pointOfInterestId;
+
+    @Column(nullable = false, length = 1000)
     private String text;
 
-//    @CreatedDate
-//    private Date date;
 
-//    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private List<AttachmentEntity> attachment;
 }

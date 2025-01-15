@@ -32,8 +32,16 @@ public class BaseController {
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("profile")
     public Client getClient() {
         return clientService.getClientForProfile();
     }
+
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("isLike")
+    public Long getClientId() {
+        return clientService.getClientId();
+    }
+
 }
