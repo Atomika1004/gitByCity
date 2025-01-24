@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: git-by-city-backend
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:postgresql://git-by-city-db:5432/gitByCity1'
+      SPRING_DATASOURCE_USERNAME: 'postgres'
+      SPRING_DATASOURCE_PASSWORD: '123'
+    ports:
+      - "8081:8081"
+    depends_on:
+      - git-by-city-db
+
+  git-by-city-db:
+    image: postgres:latest
+    container_name: git-by-city-db
+    environment:
+      POSTGRES_DB: gitByCity1
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5432:5432"

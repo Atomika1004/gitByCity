@@ -5,7 +5,9 @@ import com.atomika.gitByCity.dto.ResponseForCreateOrUpdate;
 import com.atomika.gitByCity.service.PointOfInterestService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,19 +23,23 @@ public class PointOfInterestController {
     private final PointOfInterestService pointOfInterestService;
 
     @GetMapping()
-    public List<PointOfInterest> getAllPointsOfInterest(){
-        return pointOfInterestService.findAll();
+    public ResponseEntity<List<PointOfInterest>> getAllPointsOfInterest(){
+        return new ResponseEntity<>(pointOfInterestService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public PointOfInterest getPointOfInterestById(@PathVariable Long id){
-        return pointOfInterestService.findById(id);
+    public ResponseEntity<PointOfInterest> getPointOfInterestById(@PathVariable Long id) {
+        PointOfInterest pointOfInterest = pointOfInterestService.findById(id);
+        if (pointOfInterest == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(pointOfInterest, HttpStatus.OK);
     }
 
     @PostMapping()
-    public ResponseForCreateOrUpdate createPointOfInterest(@RequestBody PointOfInterest pointOfInterest) {
+    public ResponseEntity<ResponseForCreateOrUpdate> createPointOfInterest(@RequestBody PointOfInterest pointOfInterest) {
         String clientName = AuthorizationController.getCurrentUsername();
-        return pointOfInterestService.create(pointOfInterest, clientName);
+        return new ResponseEntity<>(pointOfInterestService.create(pointOfInterest, clientName), HttpStatus.CREATED);
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

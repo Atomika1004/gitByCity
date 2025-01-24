@@ -43,15 +43,20 @@ public class JwtUserDetailsService implements UserDetailsService {
     public SignInResponse createClient(SignInRequest request) {
         Optional<CredentialEntity> credential = credentialRepository.findByUsername(request.getUsername());
         boolean isNewClient = clientRepository.findClientByFio(request.getFio());
+        boolean isNewEmail = credentialRepository.isExistEmailByUsername(request.getEmail());
         if (credential.isPresent()) {
             return SignInResponse.builder().message("Пользователь с таким логином уже существует").build();
         }
         else if (isNewClient) {
             return SignInResponse.builder().message("Пользователь с таким фио уже существует").build();
         }
+        else if (isNewEmail) {
+            return SignInResponse.builder().message("Пользователь с такой почтой уже существует").build();
+        }
         else {
             CredentialEntity client = CredentialEntity.builder()
                     .username(request.getUsername())
+                    .email(request.getEmail())
                     .password(new PasswordEntity(request.getPwd()))
                     .enabled(true)
                     .role(Role.CLIENT)

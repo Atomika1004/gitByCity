@@ -22,7 +22,7 @@ public class RouteController {
         return routeService.findAll();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public Route getRouteById(@PathVariable Long id) {
         return routeService.findById(id);
     }

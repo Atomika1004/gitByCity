@@ -12,9 +12,10 @@ import java.util.List;
 public class Client {
     private Long id;
     private String fio;
+    private String email;
     private List<Route> createdRoute;
     private List<Route> estimatedRoute;
     private Credential credential;
-    List<PointOfInterest> estimatedPointOfInterest;
-    List<PointOfInterest> createdPointOfInterest;
+    private List<PointOfInterest> estimatedPointOfInterest;
+    private List<PointOfInterest> createdPointOfInterest;
 }

@@ -1,19 +1,14 @@
 package com.atomika.gitByCity.dto.mapper;
 
-import com.atomika.gitByCity.dto.Attachment;
 import com.atomika.gitByCity.dto.Client;
 import com.atomika.gitByCity.dto.PointOfInterest;
-import com.atomika.gitByCity.dto.PointOfInterestRoute;
 import com.atomika.gitByCity.entity.AttachmentEntity;
-import com.atomika.gitByCity.entity.ClientEntity;
 import com.atomika.gitByCity.entity.PointOfInterestEntity;
-import com.atomika.gitByCity.repositories.ClientRepository;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
-
-import java.util.Base64;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", uses = {ClientMapper.class, AttachmentMapper.class})

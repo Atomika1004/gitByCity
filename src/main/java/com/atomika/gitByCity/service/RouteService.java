@@ -6,7 +6,6 @@ import com.atomika.gitByCity.dto.Route;
 import com.atomika.gitByCity.dto.mapper.RouteMapper;
 
 import com.atomika.gitByCity.entity.ClientEntity;
-import com.atomika.gitByCity.entity.PointOfInterestEntity;
 import com.atomika.gitByCity.entity.RouteEntity;
 import com.atomika.gitByCity.repositories.ClientRepository;
 import com.atomika.gitByCity.repositories.RouteRepository;
@@ -30,8 +29,8 @@ public class RouteService {
 
     @Transactional
     public ResponseForCreateOrUpdate create(Route route, String clientName) {
-        boolean isExists = routeRepository.findRouteEntityByName(route.getName());
-        if (isExists) {
+        RouteEntity isExists = routeRepository.findRouteEntityByName(route.getName());
+        if (isExists != null) {
             return ResponseForCreateOrUpdate.builder().message("Маршрут с таким названием уже существует").
                     success(false).build();
         }else {
@@ -44,8 +43,8 @@ public class RouteService {
 
     @Transactional
     public ResponseForCreateOrUpdate update(Route route) {
-        boolean isExists = routeRepository.findRouteEntityByName(route.getName());
-        if (isExists) {
+        RouteEntity isExists = routeRepository.findRouteEntityByName(route.getName());
+        if (isExists != null && !isExists.getId().equals(route.getId())) {
             return ResponseForCreateOrUpdate.builder().message("Маршрут с таким названием уже существует").
                     success(false).build();
         }else {

@@ -7,6 +7,7 @@ import com.atomika.gitByCity.dto.mapper.PointOfInterestMapper;
 import com.atomika.gitByCity.dto.mapper.RouteMapper;
 import com.atomika.gitByCity.entity.ClientEntity;
 import com.atomika.gitByCity.repositories.ClientRepository;
+import com.atomika.gitByCity.repositories.CredentialRepository;
 import com.atomika.gitByCity.repositories.PointOfInterestRepository;
 import com.atomika.gitByCity.repositories.RouteRepository;
 import jakarta.transaction.Transactional;
@@ -24,11 +25,13 @@ public class ClientService {
     private final RouteMapper routeMapper;
     private final RouteRepository routeRepository;
     private final ClientRepository clientRepository;
+    private final CredentialRepository credentialRepository;
 
     @Transactional
     public Client getClientForProfile() {
         return Client.builder().
                 fio(clientRepository.findFioByUsername(AuthorizationController.getCurrentUsername())).
+                email(credentialRepository.findEmailByUsername(AuthorizationController.getCurrentUsername())).
                 createdPointOfInterest(pointOfInterestMapper.toList(pointOfInterestRepository.
                         findListPointsCreatedByClient(AuthorizationController.getCurrentUsername()))).
                 estimatedPointOfInterest(pointOfInterestMapper.toList(pointOfInterestRepository.

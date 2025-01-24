@@ -15,19 +15,18 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", uses = {PointOfInterestRouteMapper.class, CommentMapper.class, ClientMapper.class, AttachmentMapper.class})
 public interface RouteMapper {
 
-    @Mapping(target = "pointsOfInterest", source = "pointOfInterestRoutesDto", qualifiedByName = "toPointOfInterestRouteList")
+    @Mapping(target = "pointsOfInterest", source = "pointOfInterestRoutesIds", qualifiedByName = "toPointOfInterestRouteList")
     @Mapping(target = "likes", ignore = true)
     @Mapping(target = "images", source = "images", qualifiedByName = "toAttachmentEntitiesRoute")
     RouteEntity dtoToEntity(Route route);
 
-    @Mapping(target = "pointOfInterestRoutesDto", source = "pointsOfInterest", qualifiedByName = "toIdList")
+    @Mapping(target = "pointOfInterestRoutesIds", source = "pointsOfInterest", qualifiedByName = "toIdList")
     @Mapping(target = "likes", source = "likes", qualifiedByName = "toLikeListIds")
     @Mapping(target = "images", source = "images", qualifiedByName = "toImagesRoute")
     Route entityToDto(RouteEntity routeEntity);
 
     List<Route> toList(List<RouteEntity> routeEntityList);
 
-    List<RouteEntity> toListEntity(List<Route> routes);
 
     @Named("toIdList")
     default List<Long> toIdList(List<PointOfInterestRoute> pointOfInterestRoutes) {

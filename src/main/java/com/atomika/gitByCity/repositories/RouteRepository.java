@@ -22,6 +22,6 @@ public interface RouteRepository extends JpaRepository<RouteEntity, Long > {
     @Query("SELECT r FROM RouteEntity r WHERE r.client.credential.username =:username")
     List<RouteEntity> findListRoutesCreatedByClient(String username);
 
-    @Query("SELECT COUNT(r) > 0 FROM RouteEntity r WHERE r.name = :name")
-    boolean findRouteEntityByName(String name);
+    @Query("SELECT r FROM RouteEntity r WHERE r.name = :name")
+    RouteEntity findRouteEntityByName(String name);
 }

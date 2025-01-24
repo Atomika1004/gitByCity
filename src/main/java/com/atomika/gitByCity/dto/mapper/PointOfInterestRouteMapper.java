@@ -1,11 +1,8 @@
 package com.atomika.gitByCity.dto.mapper;
 
-import com.atomika.gitByCity.dto.PointOfInterest;
 import com.atomika.gitByCity.dto.PointOfInterestRoute;
 import com.atomika.gitByCity.entity.PointOfInterestRouteEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 

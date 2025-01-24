@@ -31,27 +31,25 @@ public class AuthorizationController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/api/login")
-    public JwtResponse createToken(@RequestBody JwtRequest request) throws Exception {
+    public ResponseEntity<JwtResponse> createToken(@RequestBody JwtRequest request) throws Exception {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
             );
-        }
-        catch (DisabledException e) {
+        } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
-        }
-        catch (BadCredentialsException e) {
+        } catch (BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-        return new JwtResponse(tokenManager.generateJwtToken(userDetails));
+        return new ResponseEntity<>(new JwtResponse(tokenManager.generateJwtToken(userDetails)), HttpStatus.CREATED);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/api/registration")
-    public SignInResponse registerUser(@RequestBody SignInRequest request) {
-        return userDetailsService.createClient(request);
+    public ResponseEntity<SignInResponse> registerUser(@RequestBody SignInRequest request) {
+        return new ResponseEntity<>(userDetailsService.createClient(request), HttpStatus.CREATED);
     }
 
 

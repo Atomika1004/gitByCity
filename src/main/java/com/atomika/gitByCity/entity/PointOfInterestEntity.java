@@ -1,10 +1,7 @@
 package com.atomika.gitByCity.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +11,7 @@ import java.util.List;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class PointOfInterestEntity {
 
     @Id
@@ -30,13 +28,13 @@ public class PointOfInterestEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "point_of_interest_id")
     @OrderBy("id ASC")
-    List<AttachmentEntity> images = new ArrayList<>();
+    private List<AttachmentEntity> images = new ArrayList<>();
 
     private double longitude;
     private double latitude;
 
     @ManyToMany(mappedBy = "likedPoints", cascade = CascadeType.ALL)
-    List<ClientEntity> likes = new ArrayList<>();
+    private List<ClientEntity> likes = new ArrayList<>();
 
     @ManyToOne()
     @JoinColumn(name = "client_id", insertable = false, updatable = false, nullable = false)
@@ -45,10 +43,10 @@ public class PointOfInterestEntity {
     @Column(name = "client_id" , nullable = false)
     private Long clientId;
 
-    @OneToMany(mappedBy = "pointOfInterest",cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "pointOfInterest",cascade = CascadeType.REMOVE)
     private List<PointOfInterestRouteEntity> routes = new ArrayList<>();
 
     @OneToMany(mappedBy = "pointOfInterest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<CommentEntity> comments = new ArrayList<>();
+    private List<CommentEntity> comments = new ArrayList<>();
 }
 

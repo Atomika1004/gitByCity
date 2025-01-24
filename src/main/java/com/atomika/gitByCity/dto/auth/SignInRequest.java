@@ -7,6 +7,7 @@ import lombok.Data;
 @Builder
 public class SignInRequest {  // отправление запросов на регистрацию пользователей
     private String fio;
+    private String email;
     private String username;
     private String pwd;
 }

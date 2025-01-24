@@ -31,6 +31,8 @@ public class ClientEntity {
             inverseJoinColumns = @JoinColumn(name = "route_id"))
     List<RouteEntity> likedRoutes = new ArrayList<>();
 
+
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "point_like",
             joinColumns = @JoinColumn(name = "client_id"),

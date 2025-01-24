@@ -1,21 +1,20 @@
 package com.atomika.gitByCity.service;
 
-import com.atomika.gitByCity.dto.*;
+import com.atomika.gitByCity.dto.PointOfInterest;
+import com.atomika.gitByCity.dto.PointOfInterestRoute;
+import com.atomika.gitByCity.dto.ResponseForCreateOrUpdate;
 import com.atomika.gitByCity.dto.mapper.PointOfInterestMapper;
 import com.atomika.gitByCity.dto.mapper.PointOfInterestRouteMapper;
-import com.atomika.gitByCity.entity.*;
-import com.atomika.gitByCity.repositories.AttachmentRepository;
+import com.atomika.gitByCity.entity.ClientEntity;
+import com.atomika.gitByCity.entity.PointOfInterestEntity;
 import com.atomika.gitByCity.repositories.ClientRepository;
 import com.atomika.gitByCity.repositories.PointOfInterestRepository;
 import com.atomika.gitByCity.repositories.PointOfInterestRouteRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,8 +32,8 @@ public class PointOfInterestService {
 
 
     public ResponseForCreateOrUpdate create (PointOfInterest pointOfInterest, String clientName) {
-        boolean isExists = pointOfInterestRepository.findPointOfInterestEntityByName(pointOfInterest.getName());
-        if (isExists) {
+        PointOfInterestEntity isExists = pointOfInterestRepository.findPointOfInterestEntityByName(pointOfInterest.getName());
+        if (isExists != null) {
             return ResponseForCreateOrUpdate.builder().message("Точка с таким названием уже существует").
                     success(false).build();
         }else {
@@ -47,8 +46,8 @@ public class PointOfInterestService {
     }
 
     public ResponseForCreateOrUpdate update (PointOfInterest pointOfInterest) {
-        boolean isExists = pointOfInterestRepository.findPointOfInterestEntityByName(pointOfInterest.getName());
-        if (isExists) {
+        PointOfInterestEntity isExists = pointOfInterestRepository.findPointOfInterestEntityByName(pointOfInterest.getName());
+        if (isExists != null && !isExists.getId().equals(pointOfInterest.getId())) {
             return ResponseForCreateOrUpdate.builder().message("Точка с таким названием уже существует").
                     success(false).build();
         }else {
