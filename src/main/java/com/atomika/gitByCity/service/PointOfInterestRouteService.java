@@ -36,6 +36,6 @@ public class PointOfInterestRouteService {
     }
 
     public List<PointOfInterestRoute> saveAll (List<PointOfInterestRoute> pointOfInterestRoutes) {
-        return pointOfInterestRouteMapper.toList((List<com.atomika.gitByCity.entity.PointOfInterestRouteEntity>) pointOfInterestRouteRepository.saveAll(pointOfInterestRouteMapper.toListEntity(pointOfInterestRoutes)));
+        return pointOfInterestRouteMapper.toList(pointOfInterestRouteRepository.saveAll(pointOfInterestRouteMapper.toListEntity(pointOfInterestRoutes)));
     }
 }

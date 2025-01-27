@@ -7,6 +7,7 @@ import com.atomika.gitByCity.dto.mapper.RouteMapper;
 
 import com.atomika.gitByCity.entity.ClientEntity;
 import com.atomika.gitByCity.entity.RouteEntity;
+import com.atomika.gitByCity.exception.NotFoundException;
 import com.atomika.gitByCity.repositories.ClientRepository;
 import com.atomika.gitByCity.repositories.RouteRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -74,10 +75,12 @@ public class RouteService {
     public Long addLike(Long routeId, String clientName) {
         RouteEntity routeEntity = routeRepository.findById(routeId).orElse(null);
         Long clientId = clientRepository.findClientIdByUsername(clientName);
-
+        if (clientId == null) {
+            throw new  NotFoundException("Пользователь не найден");
+        }
         ClientEntity clientEntity = clientRepository.findById(clientId).orElse(null);
-        if (routeEntity == null || clientEntity == null) {
-            return null;
+        if (routeEntity == null) {
+            throw new NotFoundException("Маршрут не найден");
         }
         else {
             boolean isCreator = clientEntity.getLikedRoutes().stream().

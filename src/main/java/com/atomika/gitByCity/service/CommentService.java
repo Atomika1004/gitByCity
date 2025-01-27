@@ -3,6 +3,7 @@ package com.atomika.gitByCity.service;
 
 import com.atomika.gitByCity.dto.Comment;
 import com.atomika.gitByCity.dto.mapper.CommentMapper;
+import com.atomika.gitByCity.exception.NotFoundException;
 import com.atomika.gitByCity.repositories.ClientRepository;
 import com.atomika.gitByCity.repositories.CommentRepository;
 import jakarta.transaction.Transactional;
@@ -41,7 +42,7 @@ public class CommentService {
             commentRepository.deleteById(id);
             return id;
         } else {
-            throw new RuntimeException("нет такого коммента" + id);
+            throw new NotFoundException("нет такого коммента" + id);
         }
     }
 

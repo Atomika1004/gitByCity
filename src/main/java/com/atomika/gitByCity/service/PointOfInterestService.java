@@ -7,13 +7,16 @@ import com.atomika.gitByCity.dto.mapper.PointOfInterestMapper;
 import com.atomika.gitByCity.dto.mapper.PointOfInterestRouteMapper;
 import com.atomika.gitByCity.entity.ClientEntity;
 import com.atomika.gitByCity.entity.PointOfInterestEntity;
+import com.atomika.gitByCity.exception.NotFoundException;
 import com.atomika.gitByCity.repositories.ClientRepository;
 import com.atomika.gitByCity.repositories.PointOfInterestRepository;
 import com.atomika.gitByCity.repositories.PointOfInterestRouteRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.List;
 import java.util.Objects;
@@ -80,13 +83,15 @@ public class PointOfInterestService {
 
 
 
-    public Long addLike(Long pointOfInterestId, String clientName) {
+    public Long addLike(Long pointOfInterestId, String clientName) throws ChangeSetPersister.NotFoundException {
         PointOfInterestEntity pointOfInterestEntity = pointOfInterestRepository.findById(pointOfInterestId).orElse(null);
         Long clientId = clientRepository.findClientIdByUsername(clientName);
-
+        if (clientId == null) {
+            throw new  NotFoundException("Пользователь не найден");
+        }
         ClientEntity clientEntity = clientRepository.findById(clientId).orElse(null);
-        if (pointOfInterestEntity == null || clientEntity == null) {
-            return null;
+        if (pointOfInterestEntity == null) {
+            throw new NotFoundException("Точка не найдена");
         }
         else {
             boolean isCreator = clientEntity.getLikedPoints().stream().

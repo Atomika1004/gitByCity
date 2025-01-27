@@ -2,6 +2,8 @@ package com.atomika.gitByCity.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +30,14 @@ public class PointOfInterestEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "point_of_interest_id")
     @OrderBy("id ASC")
+    @Fetch(FetchMode.SUBSELECT)
     private List<AttachmentEntity> images = new ArrayList<>();
 
     private double longitude;
     private double latitude;
 
     @ManyToMany(mappedBy = "likedPoints", cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SUBSELECT)
     private List<ClientEntity> likes = new ArrayList<>();
 
     @ManyToOne()

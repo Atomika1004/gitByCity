@@ -5,6 +5,7 @@ import com.atomika.gitByCity.dto.ResponseForCreateOrUpdate;
 import com.atomika.gitByCity.service.PointOfInterestService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -55,9 +56,11 @@ public class PointOfInterestController {
     }
 
     @PostMapping(value = "/{pointId}/like", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Long addLike(@PathVariable Long pointId, @RequestParam String clientUsername) {
-        return pointOfInterestService.addLike(pointId, clientUsername);
+    public ResponseEntity<?> addLike(@PathVariable Long pointId, @RequestParam String clientUsername) {
+        try {
+            return new ResponseEntity<>(pointOfInterestService.addLike(pointId, clientUsername), HttpStatus.CREATED);
+        }catch (ChangeSetPersister.NotFoundException e) {
+            return new ResponseEntity<>("Нет такой точки", HttpStatus.NOT_FOUND);
+        }
     }
-
-
 }

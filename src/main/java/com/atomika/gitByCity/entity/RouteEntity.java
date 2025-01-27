@@ -2,6 +2,8 @@ package com.atomika.gitByCity.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,7 @@ public class RouteEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id")
     @OrderBy("id ASC")
+    @Fetch(FetchMode.SUBSELECT)
     List<AttachmentEntity> images = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

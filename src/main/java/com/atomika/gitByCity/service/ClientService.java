@@ -2,24 +2,24 @@ package com.atomika.gitByCity.service;
 
 import com.atomika.gitByCity.controllers.AuthorizationController;
 import com.atomika.gitByCity.dto.Client;
-import com.atomika.gitByCity.dto.mapper.ClientMapper;
 import com.atomika.gitByCity.dto.mapper.PointOfInterestMapper;
 import com.atomika.gitByCity.dto.mapper.RouteMapper;
-import com.atomika.gitByCity.entity.ClientEntity;
+import com.atomika.gitByCity.exception.NotFoundException;
 import com.atomika.gitByCity.repositories.ClientRepository;
 import com.atomika.gitByCity.repositories.CredentialRepository;
 import com.atomika.gitByCity.repositories.PointOfInterestRepository;
 import com.atomika.gitByCity.repositories.RouteRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ClientService {
 
+    private static final Logger log = LogManager.getLogger(ClientService.class);
     private final PointOfInterestRepository pointOfInterestRepository;
     private final PointOfInterestMapper pointOfInterestMapper;
     private final RouteMapper routeMapper;
@@ -29,22 +29,29 @@ public class ClientService {
 
     @Transactional
     public Client getClientForProfile() {
+        String username = AuthorizationController.getCurrentUsername();
         return Client.builder().
-                fio(clientRepository.findFioByUsername(AuthorizationController.getCurrentUsername())).
-                email(credentialRepository.findEmailByUsername(AuthorizationController.getCurrentUsername())).
+                fio(clientRepository.findFioByUsername(username)).
+                email(credentialRepository.findEmailByUsername(username)).
                 createdPointOfInterest(pointOfInterestMapper.toList(pointOfInterestRepository.
-                        findListPointsCreatedByClient(AuthorizationController.getCurrentUsername()))).
+                        findListPointsCreatedByClient(username))).
                 estimatedPointOfInterest(pointOfInterestMapper.toList(pointOfInterestRepository.
-                        findListLikesFromPointByClient(AuthorizationController.getCurrentUsername()))).
+                        findListLikesFromPointByClient(username))).
                 createdRoute(routeMapper.toList(routeRepository.
-                        findListRoutesCreatedByClient(AuthorizationController.getCurrentUsername()))).
+                        findListRoutesCreatedByClient(username))).
                 estimatedRoute(routeMapper.toList(routeRepository.
-                        findListLikesFromRoutesByClient(AuthorizationController.getCurrentUsername()))).
+                        findListLikesFromRoutesByClient(username))).
                 build();
     }
 
+
     @Transactional
     public Long getClientId() {
-        return clientRepository.findClientIdByUsername(AuthorizationController.getCurrentUsername());
+        Long id = clientRepository.findClientIdByUsername(AuthorizationController.getCurrentUsername());
+        if (id == null) {
+            throw new NotFoundException("Пользователь не найден");
+        } else {
+            return id;
+        }
     }
 }
