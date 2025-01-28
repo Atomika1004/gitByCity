@@ -11,15 +11,17 @@ import com.atomika.gitByCity.repositories.PointOfInterestRepository;
 import com.atomika.gitByCity.repositories.RouteRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class ClientService {
 
-    private static final Logger log = LogManager.getLogger(ClientService.class);
+    private static final Logger logger = LoggerFactory.getLogger(ClientService.class);
+
     private final PointOfInterestRepository pointOfInterestRepository;
     private final PointOfInterestMapper pointOfInterestMapper;
     private final RouteMapper routeMapper;
@@ -30,6 +32,7 @@ public class ClientService {
     @Transactional
     public Client getClientForProfile() {
         String username = AuthorizationController.getCurrentUsername();
+
         return Client.builder().
                 fio(clientRepository.findFioByUsername(username)).
                 email(credentialRepository.findEmailByUsername(username)).

@@ -13,15 +13,15 @@ import com.atomika.gitByCity.repositories.PointOfInterestRepository;
 import com.atomika.gitByCity.repositories.PointOfInterestRouteRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.List;
 import java.util.Objects;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PointOfInterestService {
@@ -33,13 +33,18 @@ public class PointOfInterestService {
     private final PointOfInterestRouteMapper pointOfInterestRouteMapper;
     private final RouteService routeService;
 
+    private static final Logger logger = LoggerFactory.getLogger(PointOfInterestService.class);
+
+
 
     public ResponseForCreateOrUpdate create (PointOfInterest pointOfInterest, String clientName) {
         PointOfInterestEntity isExists = pointOfInterestRepository.findPointOfInterestEntityByName(pointOfInterest.getName());
         if (isExists != null) {
+            logger.error("Точка {} не была добавлена", pointOfInterest.getName());
             return ResponseForCreateOrUpdate.builder().message("Точка с таким названием уже существует").
                     success(false).build();
         }else {
+            logger.info("Точка {} была успешно сохранена", pointOfInterest.getName());
             pointOfInterest.setClientId(clientRepository.findClientIdByUsername(clientName));
             pointOfInterestMapper.entityToDto(
                     pointOfInterestRepository.save(pointOfInterestMapper.dtoToEntity(pointOfInterest)));
@@ -51,9 +56,11 @@ public class PointOfInterestService {
     public ResponseForCreateOrUpdate update (PointOfInterest pointOfInterest) {
         PointOfInterestEntity isExists = pointOfInterestRepository.findPointOfInterestEntityByName(pointOfInterest.getName());
         if (isExists != null && !isExists.getId().equals(pointOfInterest.getId())) {
+            logger.error("Точка с таким названием {} уже есть в базе данных", pointOfInterest.getName());
             return ResponseForCreateOrUpdate.builder().message("Точка с таким названием уже существует").
                     success(false).build();
         }else {
+            logger.info("Точка с таким названием {} успешно сохранена", pointOfInterest.getName());
             pointOfInterestMapper.entityToDto(
                     pointOfInterestRepository.save(pointOfInterestMapper.dtoToEntity(pointOfInterest)));
             return ResponseForCreateOrUpdate.builder().message("Точка успешно сохранена, поздравляю!!!").
@@ -68,16 +75,19 @@ public class PointOfInterestService {
         for (Long routeId : routeIds) {
             routeService.updatePosition(routeId);
         }
+        logger.info("Точка с id: {} была успешно удалена", id);
         return id;
     }
 
     @Transactional
     public List<PointOfInterest> findAll() {
+        logger.info("Список точек был успешно получен");
         return pointOfInterestMapper.toList(pointOfInterestRepository.findAll());
     }
 
     @Transactional
     public PointOfInterest findById(Long id) {
+        logger.info("Точка с id: {} успешно получена", id);
         return pointOfInterestMapper.entityToDto(pointOfInterestRepository.findById(id).orElse(null));
     }
 
@@ -97,12 +107,14 @@ public class PointOfInterestService {
             boolean isCreator = clientEntity.getLikedPoints().stream().
                     anyMatch(point -> Objects.equals(point.getId(), pointOfInterestId));
             if (isCreator) {
+                logger.info("Лайк на точку {} был успешно удален", pointOfInterestId);
                 deleteLike(pointOfInterestId, clientId);
             }
             else {
                 clientEntity.getLikedPoints().add(pointOfInterestEntity);
                 pointOfInterestEntity.getLikes().add(clientEntity);
                 clientRepository.save(clientEntity);
+                logger.info("Лайк на точку {} был успешно добавлен", pointOfInterestId);
             }
             List<ClientEntity> list = pointOfInterestEntity.getLikes();
             if(!list.isEmpty()) {
@@ -118,7 +130,7 @@ public class PointOfInterestService {
         PointOfInterestEntity pointOfInterestEntity = pointOfInterestRepository.findById(pointOfInterestId).orElse(null);
         ClientEntity clientEntity = clientRepository.findById(clientId).orElse(null);
         if (pointOfInterestEntity == null || clientEntity == null) {
-            return;
+            throw new NotFoundException("Данные для удаления лайка не найдены");
         }
         else {
             clientEntity.getLikedPoints().remove(pointOfInterestEntity);
