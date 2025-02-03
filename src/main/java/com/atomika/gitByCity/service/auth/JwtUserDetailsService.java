@@ -7,6 +7,7 @@ import com.atomika.gitByCity.dto.auth.SignInResponse;
 import com.atomika.gitByCity.entity.ClientEntity;
 import com.atomika.gitByCity.entity.CredentialEntity;
 import com.atomika.gitByCity.entity.PasswordEntity;
+import com.atomika.gitByCity.exception.ExistsException;
 import com.atomika.gitByCity.repositories.ClientRepository;
 import com.atomika.gitByCity.repositories.CredentialRepository;
 import lombok.AllArgsConstructor;
@@ -45,13 +46,13 @@ public class JwtUserDetailsService implements UserDetailsService {
         boolean isNewClient = clientRepository.findClientByFio(request.getFio());
         boolean isNewEmail = credentialRepository.isExistEmailByUsername(request.getEmail());
         if (credential.isPresent()) {
-            return SignInResponse.builder().message("Пользователь с таким логином уже существует").build();
+            throw new ExistsException("Пользователь с таким логином уже существует");
         }
         else if (isNewClient) {
-            return SignInResponse.builder().message("Пользователь с таким фио уже существует").build();
+            throw new ExistsException("Пользователь с таким фио уже существует");
         }
         else if (isNewEmail) {
-            return SignInResponse.builder().message("Пользователь с такой почтой уже существует").build();
+            throw new ExistsException("Пользователь с такой почтой уже существует");
         }
         else {
             CredentialEntity client = CredentialEntity.builder()

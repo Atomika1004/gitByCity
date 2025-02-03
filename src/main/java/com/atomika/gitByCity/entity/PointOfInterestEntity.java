@@ -36,8 +36,7 @@ public class PointOfInterestEntity {
     private double longitude;
     private double latitude;
 
-    @ManyToMany(mappedBy = "likedPoints", cascade = CascadeType.ALL)
-    @Fetch(FetchMode.SUBSELECT)
+    @ManyToMany(mappedBy = "likedPoints")
     private List<ClientEntity> likes = new ArrayList<>();
 
     @ManyToOne()

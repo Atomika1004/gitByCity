@@ -14,10 +14,10 @@ public class InitialService {
 
     public void initial() {
 
-        userDetailsService.createClient(SignInRequest.builder()
-                .username("user1")
-                .pwd("1234")
-                .build());
+//        userDetailsService.createClient(SignInRequest.builder()
+//                .username("user1")
+//                .pwd("1234")
+//                .build());
 //
 //        userDetailsService.createClient(SignInRequest.builder()
 //                .username("user2")

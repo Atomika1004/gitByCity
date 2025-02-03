@@ -7,7 +7,9 @@ import org.hibernate.annotations.FetchMode;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "client")
@@ -26,20 +28,24 @@ public class ClientEntity {
 
     @OneToMany (mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
-    private List<RouteEntity> route = new ArrayList<>();
+    @ToString.Exclude
+    private Set<RouteEntity> route = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "route_like",
             joinColumns = @JoinColumn(name = "client_id"),
             inverseJoinColumns = @JoinColumn(name = "route_id"))
-    List<RouteEntity> likedRoutes = new ArrayList<>();
+    @Fetch(FetchMode.SUBSELECT)
+    @ToString.Exclude
+    Set<RouteEntity> likedRoutes = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "point_like",
             joinColumns = @JoinColumn(name = "client_id"),
             inverseJoinColumns = @JoinColumn(name = "point_of_interest_id"))
     @Fetch(FetchMode.SUBSELECT)
-    List<PointOfInterestEntity> likedPoints = new ArrayList<>();
+    @ToString.Exclude
+    Set<PointOfInterestEntity> likedPoints = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "credential_id", nullable = false)
@@ -48,6 +54,6 @@ public class ClientEntity {
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Fetch(FetchMode.SUBSELECT)
     @ToString.Exclude
-    private List<PointOfInterestEntity> pointOfInterest = new ArrayList<>();
+    private Set<PointOfInterestEntity> pointOfInterest = new HashSet<>();
 
 }

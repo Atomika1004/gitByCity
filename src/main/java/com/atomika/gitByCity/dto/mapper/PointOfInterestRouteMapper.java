@@ -5,6 +5,7 @@ import com.atomika.gitByCity.entity.PointOfInterestRouteEntity;
 import org.mapstruct.Mapper;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper(componentModel = "spring", uses = {ClientMapper.class})
 public interface PointOfInterestRouteMapper {
@@ -16,5 +17,4 @@ public interface PointOfInterestRouteMapper {
     List<PointOfInterestRoute> toList(List<PointOfInterestRouteEntity> pointOfInterestRouteEntityList);
 
     List<PointOfInterestRouteEntity> toListEntity(List<PointOfInterestRoute> pointOfInterestRoutesDto);
-
 }

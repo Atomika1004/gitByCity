@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: gitByCity
+  output:
+    ansi:
+      enabled: always
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    # properties:
+    #   hibernate:
+    #     format_sql: true
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/gitByCity1
+    username: postgres
+    password: 123
+
+  servlet:
+    multipart:
+      enabled: true
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+server:
+  port: 8081
+
+token:
+  signing:
+    key: basebasebasebasebasebasebasebasebasebasebasebasebasebasebasebase
+
+log4j:
+  appender:
+    FILE:
+      encoding: UTF-8
+
+app:
+  corePoolSize: 10
+  maxPoolSize: 10
+  queueCapacity: 150
+  threadNamePrefix: AsyncTaskThread-

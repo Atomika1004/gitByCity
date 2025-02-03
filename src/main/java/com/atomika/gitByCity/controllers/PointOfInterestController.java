@@ -5,7 +5,6 @@ import com.atomika.gitByCity.dto.ResponseForCreateOrUpdate;
 import com.atomika.gitByCity.service.PointOfInterestService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +12,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 
 @Slf4j
@@ -25,6 +28,7 @@ public class PointOfInterestController {
 
     @GetMapping()
     public ResponseEntity<List<PointOfInterest>> getAllPointsOfInterest(){
+        pointOfInterestService.asyncLog();
         return new ResponseEntity<>(pointOfInterestService.findAll(), HttpStatus.OK);
     }
 
@@ -38,7 +42,7 @@ public class PointOfInterestController {
     }
 
     @PostMapping()
-    public ResponseEntity<ResponseForCreateOrUpdate> createPointOfInterest(@RequestBody PointOfInterest pointOfInterest) {
+    public ResponseEntity<?> createPointOfInterest(@RequestBody PointOfInterest pointOfInterest) {
         String clientName = AuthorizationController.getCurrentUsername();
         return new ResponseEntity<>(pointOfInterestService.create(pointOfInterest, clientName), HttpStatus.CREATED);
     }
@@ -51,16 +55,17 @@ public class PointOfInterestController {
 
     @PutMapping(value = "update/{id}")
     @PreAuthorize("@pointOfInterestService.isCreator(authentication.name, #pointOfInterest.id)")
-    public ResponseForCreateOrUpdate updatePointOfInterest(@RequestBody PointOfInterest pointOfInterest) {
-        return pointOfInterestService.update(pointOfInterest);
+    public ResponseEntity<ResponseForCreateOrUpdate> updatePointOfInterest(@RequestBody PointOfInterest pointOfInterest) {
+        return  new ResponseEntity<>(pointOfInterestService.update(pointOfInterest), HttpStatus.OK);
     }
 
     @PostMapping(value = "/{pointId}/like", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addLike(@PathVariable Long pointId, @RequestParam String clientUsername) {
+    public ResponseEntity<?> addLike(@PathVariable Long pointId, @RequestParam String clientUsername) throws ExecutionException, InterruptedException, TimeoutException {
         try {
-            return new ResponseEntity<>(pointOfInterestService.addLike(pointId, clientUsername), HttpStatus.CREATED);
-        }catch (ChangeSetPersister.NotFoundException e) {
-            return new ResponseEntity<>("Нет такой точки", HttpStatus.NOT_FOUND);
+            CompletableFuture<Long> resLike = pointOfInterestService.addLike(pointId, clientUsername);
+            return new ResponseEntity<>(resLike.get(500, TimeUnit.MILLISECONDS), HttpStatus.OK);
+        }catch (TimeoutException e) {
+            return new ResponseEntity<>("Сервис не успел отработать за должное время", HttpStatus.REQUEST_TIMEOUT);
         }
     }
 }

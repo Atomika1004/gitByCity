@@ -5,9 +5,12 @@ import com.atomika.gitByCity.dto.Route;
 import com.atomika.gitByCity.entity.AttachmentEntity;
 import com.atomika.gitByCity.entity.ClientEntity;
 import com.atomika.gitByCity.entity.RouteEntity;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -26,7 +29,6 @@ public interface RouteMapper {
     Route entityToDto(RouteEntity routeEntity);
 
     List<Route> toList(List<RouteEntity> routeEntityList);
-
 
     @Named("toIdList")
     default List<Long> toIdList(List<PointOfInterestRoute> pointOfInterestRoutes) {
@@ -48,7 +50,7 @@ public interface RouteMapper {
                         .pointOfInterestId(point)
                         .position(index.getAndIncrement())
                         .build())
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Named("toLikeListIds")

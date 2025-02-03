@@ -3,12 +3,14 @@ package com.atomika.gitByCity.dto.mapper;
 import com.atomika.gitByCity.dto.Client;
 import com.atomika.gitByCity.dto.PointOfInterest;
 import com.atomika.gitByCity.entity.AttachmentEntity;
+import com.atomika.gitByCity.entity.ClientEntity;
 import com.atomika.gitByCity.entity.PointOfInterestEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", uses = {ClientMapper.class, AttachmentMapper.class})
@@ -26,11 +28,11 @@ public interface PointOfInterestMapper {
     List<PointOfInterest> toList(List<PointOfInterestEntity> pointOfInterestEntityList);
 
     @Named("toLike")
-    default List<Long> toLike(List<Client> clientList) {
+    default List<Long> toLike(List<ClientEntity> clientList) {
         if (clientList == null || clientList.isEmpty()) {
             return null;
         }
-        return clientList.stream().map(Client::getId).toList();
+        return clientList.stream().map(ClientEntity::getId).toList();
     }
 
     @Named("toImages")

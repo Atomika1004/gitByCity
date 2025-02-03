@@ -2,9 +2,11 @@ package com.atomika.gitByCity.controllers;
 
 import com.atomika.gitByCity.dto.ResponseForCreateOrUpdate;
 import com.atomika.gitByCity.dto.Route;
+import com.atomika.gitByCity.entity.RouteEntity;
 import com.atomika.gitByCity.exception.NotFoundException;
 import com.atomika.gitByCity.service.RouteService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +18,17 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/base/routes")
+@Slf4j
 public class RouteController {
 
     private final RouteService routeService;
 
     @GetMapping()
-    public List<Route> getAllRoutes() {
+    public List<Route> getAllRoutes(){
+//        List<RouteEntity> routeEntityList = routeService.getRoutes();
+//        for (RouteEntity routeEntity : routeEntityList) {
+//            routeService.getTenRoutes(routeEntity);
+//        }
         return routeService.findAll();
     }
 
@@ -50,12 +57,6 @@ public class RouteController {
 
     @PostMapping(value = "/{routeId}/like", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addLike(@PathVariable Long routeId, @RequestParam String clientUsername) {
-        try {
-            return new ResponseEntity<>(routeService.addLike(routeId, clientUsername), HttpStatus.NOT_FOUND);
-        }
-        catch (NotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-
+        return new ResponseEntity<>(routeService.addLike(routeId, clientUsername), HttpStatus.OK);
     }
 }

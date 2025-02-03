@@ -6,14 +6,17 @@ import com.atomika.gitByCity.dto.mapper.CommentMapper;
 import com.atomika.gitByCity.exception.NotFoundException;
 import com.atomika.gitByCity.repositories.ClientRepository;
 import com.atomika.gitByCity.repositories.CommentRepository;
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CommentService {
 
     private final CommentRepository commentRepository;
@@ -28,6 +31,7 @@ public class CommentService {
                 commentRepository.save(commentMapper.dtoToEntity(comment)));
     }
 
+    @Transactional
     public Comment update (Comment comment, String clientName) {
         comment.setClientId(clientRepository.findClientIdByUsername(clientName));
         return commentMapper.entityToDto(
@@ -46,12 +50,12 @@ public class CommentService {
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Comment> findAllForRoute (long routeId) {
         return commentMapper.toList(commentRepository.findAllForRoute(routeId));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Comment> findAllForPoint (long pointId) {
         return commentMapper.toList(commentRepository.findAllForPoint(pointId));
     }

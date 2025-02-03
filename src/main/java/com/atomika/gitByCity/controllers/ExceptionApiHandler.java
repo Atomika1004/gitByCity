@@ -1,6 +1,8 @@
 package com.atomika.gitByCity.controllers;
 import com.atomika.gitByCity.dto.exp.ExceptionMessage;
+import com.atomika.gitByCity.exception.ExistsException;
 import com.atomika.gitByCity.exception.NotFoundException;
+import com.atomika.gitByCity.exception.NotUniqException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,4 +25,19 @@ public class ExceptionApiHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(new ExceptionMessage(exception.getMessage()));
     }
+
+    @ExceptionHandler(ExistsException.class)
+    public ResponseEntity<ExceptionMessage> existsException(ExistsException exception) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ExceptionMessage(exception.getMessage()));
+    }
+
+    @ExceptionHandler(NotUniqException.class)
+    public ResponseEntity<ExceptionMessage> notUniqException(NotUniqException exception) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ExceptionMessage(exception.getMessage()));
+    }
+
 }
