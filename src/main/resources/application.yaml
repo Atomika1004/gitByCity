@@ -44,3 +44,9 @@ app:
   maxPoolSize: 10
   queueCapacity: 150
   threadNamePrefix: AsyncTaskThread-
+
+minio:
+  bucket: imagesmy
+  url: http://localhost:9000
+  accessKey: minioadmin
+  secretKey: minioadmin

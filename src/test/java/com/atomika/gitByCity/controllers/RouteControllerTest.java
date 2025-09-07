@@ -34,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(classes = TestcontainersConfig.class)
 @AutoConfigureMockMvc
-//@Slf4j
 class RouteControllerTest {
 
     @Autowired

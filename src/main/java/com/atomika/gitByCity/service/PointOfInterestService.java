@@ -147,6 +147,5 @@ public class PointOfInterestService {
         }catch (InterruptedException e) {
             e.getMessage();
         }
-
     }
 }

@@ -31,14 +31,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(classes = TestcontainersConfig.class)
 @AutoConfigureMockMvc
-//@Slf4j
 class CommentControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-
-
 
     @Autowired
     private CommentController commentController;

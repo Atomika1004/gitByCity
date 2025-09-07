@@ -7,7 +7,5 @@ import java.util.List;
 
 public interface PointOfInterestRouteRepository extends JpaRepository<PointOfInterestRouteEntity, Long> {
 
-    List<PointOfInterestRouteEntity> findAllByOrderByPosition();
-
     List<PointOfInterestRouteEntity> findByPointOfInterestId(long pointOfInterestId);
 }

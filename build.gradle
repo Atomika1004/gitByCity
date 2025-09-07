@@ -52,6 +52,8 @@ dependencies {
 	testImplementation "org.testcontainers:junit-jupiter:1.17.0"
 
 	implementation 'org.liquibase:liquibase-core'
+
+	implementation group: 'io.minio', name: 'minio', version: '8.5.17'
 }
 
 

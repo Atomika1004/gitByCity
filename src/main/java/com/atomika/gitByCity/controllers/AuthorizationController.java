@@ -41,7 +41,6 @@ public class AuthorizationController {
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
-
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
         return new ResponseEntity<>(new JwtResponse(tokenManager.generateJwtToken(userDetails)), HttpStatus.CREATED);
     }
@@ -51,7 +50,6 @@ public class AuthorizationController {
     public ResponseEntity<SignInResponse> registerUser(@RequestBody SignInRequest request) {
         return new ResponseEntity<>(userDetailsService.createClient(request), HttpStatus.CREATED);
     }
-
 
     public static String getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

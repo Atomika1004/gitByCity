@@ -2,6 +2,7 @@ package com.atomika.gitByCity.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -12,6 +13,6 @@ public class Attachment {
 
     private Long pointOfInterestId;
 
-    private String imageUrl;
+    private MultipartFile image;
 
 }

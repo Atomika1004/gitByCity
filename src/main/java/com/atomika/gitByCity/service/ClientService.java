@@ -20,6 +20,7 @@ import java.util.Optional;
 public class ClientService {
 
     private final ClientRepository clientRepository;
+
     private final ClientMapper clientMapper;
 
     @Transactional(readOnly = true)

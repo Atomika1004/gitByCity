@@ -62,7 +62,7 @@ public class RouteService {
         return id;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Route findById(Long id) {
         return routeMapper.entityToDto(routeRepository.findById(id).orElse(null));
     }

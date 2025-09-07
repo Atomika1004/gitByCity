@@ -21,10 +21,6 @@ public interface ClientRepository extends JpaRepository<ClientEntity, Long> {
     @Query("SELECT COUNT(c)> 0 FROM ClientEntity c WHERE c.fio = :fio")
     boolean findClientByFio(String fio);
 
-    @Query("SELECT c.fio FROM ClientEntity c WHERE c.credential.username = :username")
-    String findFioByUsername(String username);
-
-
     @EntityGraph(attributePaths = {
             "credential", "pointOfInterest", "likedPoints",
             "route", "likedRoutes"

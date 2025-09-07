@@ -24,14 +24,12 @@ public class AttachmentEntity {
     @Column(name = "point_of_interest_id")
     private Long pointOfInterestId;
 
-
     @ManyToOne
     @JoinColumn(name = "route_id", nullable = true, updatable = false, insertable = false)
     private RouteEntity route;
 
     @Column(name = "route_id")
     private Long routeId;
-
 
     @Lob
     @Column(columnDefinition = "TEXT")

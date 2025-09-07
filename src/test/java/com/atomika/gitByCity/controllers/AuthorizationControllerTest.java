@@ -27,7 +27,6 @@ import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @WebMvcTest(AuthorizationController.class)
-//@Slf4j
 class AuthorizationControllerTest {
 
     @MockBean
