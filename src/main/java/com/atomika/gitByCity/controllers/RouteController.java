@@ -25,10 +25,6 @@ public class RouteController {
 
     @GetMapping()
     public List<Route> getAllRoutes(){
-//        List<RouteEntity> routeEntityList = routeService.getRoutes();
-//        for (RouteEntity routeEntity : routeEntityList) {
-//            routeService.getTenRoutes(routeEntity);
-//        }
         return routeService.findAll();
     }
 
