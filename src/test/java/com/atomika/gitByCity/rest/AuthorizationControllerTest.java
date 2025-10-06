@@ -1,12 +1,13 @@
-package com.atomika.gitByCity.controllers;
+package com.atomika.gitByCity.rest;
 
+import com.atomika.gitByCity.dto.AuthUser;
 import com.atomika.gitByCity.dto.auth.JwtRequest;
 import com.atomika.gitByCity.dto.auth.JwtResponse;
 import com.atomika.gitByCity.dto.auth.SignInRequest;
 import com.atomika.gitByCity.dto.auth.SignInResponse;
 import com.atomika.gitByCity.repositories.ClientRepository;
-import com.atomika.gitByCity.service.auth.JwtUserDetailsService;
-import com.atomika.gitByCity.service.auth.TokenManager;
+import com.atomika.gitByCity.service.auth.CustomUserDetailsService;
+import com.atomika.gitByCity.service.auth.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 //import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -30,13 +31,13 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 class AuthorizationControllerTest {
 
     @MockBean
-    private JwtUserDetailsService userDetailsService;
+    private CustomUserDetailsService userDetailsService;
 
     @MockBean
     private AuthenticationManager authenticationManager;
 
     @MockBean
-    private TokenManager tokenManager;
+    private JwtService jwtService;
 
     @MockBean
     private ClientRepository clientRepository;
@@ -59,15 +60,17 @@ class AuthorizationControllerTest {
                         jwtRequest.getPassword())
                 );
 
-        UserDetails userDetails = mock(UserDetails.class);
+        AuthUser userDetails = mock(AuthUser.class);
         when(userDetailsService.loadUserByUsername(jwtRequest.getUsername()))
                 .thenReturn(userDetails);
 
         String jwtToken = "jwtToken";
-        when(tokenManager.generateJwtToken(userDetails))
+        String refreshToken = "refreshToken";
+        long expiresIn = 123213L;
+        when(jwtService.generateJwtToken(userDetails))
                 .thenReturn(jwtToken);
 
-        JwtResponse expectedResponse = new JwtResponse(jwtToken);
+        JwtResponse expectedResponse = new JwtResponse(jwtToken, refreshToken, expiresIn);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/login")

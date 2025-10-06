@@ -14,7 +14,7 @@ public interface CommentRepository extends JpaRepository<CommentEntity,Long> {
     @Query("SELECT c FROM CommentEntity c WHERE c.pointOfInterestId = :pointId")
     List<CommentEntity> findAllForPoint(long pointId);
 
-    @Query("SELECT COUNT(c) >0  from CommentEntity c WHERE c.client.credential.username = :username AND c.id = :commentId")
+    @Query("SELECT COUNT(c) > 0  from CommentEntity c WHERE c.client.credential.username = :username AND c.id = :commentId")
     boolean isCreator(String username, long commentId);
 
 }

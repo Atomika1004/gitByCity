@@ -2,34 +2,34 @@ package com.atomika.gitByCity.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "client")
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class ClientEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    Long id;
 
     @Column(unique = true)
-    private String fio;
+    String fio;
 
-    @OneToMany (mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
     @ToString.Exclude
-    private Set<RouteEntity> route = new HashSet<>();
+    Set<RouteEntity> route = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "route_like",
@@ -49,11 +49,11 @@ public class ClientEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "credential_id", nullable = false)
-    private CredentialEntity credential;
+    CredentialEntity credential;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Fetch(FetchMode.SUBSELECT)
     @ToString.Exclude
-    private Set<PointOfInterestEntity> pointOfInterest = new HashSet<>();
+    Set<PointOfInterestEntity> pointOfInterest = new HashSet<>();
 
 }

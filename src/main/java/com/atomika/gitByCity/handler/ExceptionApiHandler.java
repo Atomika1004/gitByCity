@@ -1,8 +1,8 @@
-package com.atomika.gitByCity.controllers;
+package com.atomika.gitByCity.handler;
 import com.atomika.gitByCity.dto.exp.ExceptionMessage;
-import com.atomika.gitByCity.exception.ExistsException;
-import com.atomika.gitByCity.exception.NotFoundException;
-import com.atomika.gitByCity.exception.NotUniqException;
+import com.atomika.gitByCity.handler.exception.ExistsException;
+import com.atomika.gitByCity.handler.exception.NotFoundException;
+import com.atomika.gitByCity.handler.exception.NotUniqException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

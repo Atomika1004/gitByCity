@@ -1,45 +1,43 @@
 package com.atomika.gitByCity.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Entity
 @Table(name = "comment")
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id", nullable = true, updatable = false, insertable = false)
-    private RouteEntity route;
+    RouteEntity route;
 
     @Column(name = "route_id")
-    private Long routeId;
+    Long routeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false, updatable = false, insertable = false)
-    private ClientEntity client;
+    ClientEntity client;
 
     @Column(name = "client_id")
-    private Long clientId;
+    Long clientId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "point_of_interest_id", nullable = true, updatable = false, insertable = false)
-    private PointOfInterestEntity pointOfInterest;
+    PointOfInterestEntity pointOfInterest;
 
     @Column(name = "point_of_interest_id")
-    private Long pointOfInterestId;
+    Long pointOfInterestId;
 
-    @Column(nullable = false, length = 1000)
-    private String text;
-
-
+    @Column(nullable = false)
+    String text;
 }

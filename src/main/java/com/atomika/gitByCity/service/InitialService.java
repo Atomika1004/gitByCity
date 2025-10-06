@@ -1,7 +1,6 @@
 package com.atomika.gitByCity.service;
 
-import com.atomika.gitByCity.dto.auth.SignInRequest;
-import com.atomika.gitByCity.service.auth.JwtUserDetailsService;
+import com.atomika.gitByCity.service.auth.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class InitialService {
 
-    private final JwtUserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
 
     public void initial() {

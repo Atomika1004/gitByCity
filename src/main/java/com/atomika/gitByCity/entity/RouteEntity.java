@@ -2,6 +2,7 @@ package com.atomika.gitByCity.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -12,51 +13,53 @@ import java.util.Set;
 
 @Entity
 @Table(name = "route")
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class RouteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    Long id;
 
-    @Column(unique = true,nullable = false)
-    private String name;
+    @Column(unique = true, nullable = false)
+    String name;
 
     @Column(length = 1000)
-    private String description;
+    String description;
 
     @ManyToOne
     @JoinColumn(name = "client_id", insertable = false, updatable = false, nullable = false)
-    private ClientEntity client;
+    ClientEntity client;
 
     @Column(name = "client_id")
-    private Long clientId;
+    Long clientId;
 
     @ManyToMany(mappedBy = "likedRoutes")
     @Fetch(FetchMode.SUBSELECT)
     @ToString.Exclude
-    private List<ClientEntity> likes = new ArrayList<>();
+    List<ClientEntity> likes = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-            @JoinColumn(name = "route_id")
+    @JoinColumn(name = "route_id")
     @OrderBy("position ASC")
     @Fetch(FetchMode.SUBSELECT)
     @ToString.Exclude
-    private List<PointOfInterestRouteEntity> pointsOfInterest = new ArrayList<>();
+    List<PointOfInterestRouteEntity> pointsOfInterest = new ArrayList<>();
 
     @OneToMany(mappedBy = "route", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Fetch(FetchMode.SUBSELECT)
     @ToString.Exclude
-    private List<CommentEntity> comments = new ArrayList<>();
+    List<CommentEntity> comments = new ArrayList<>();
 
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id")
     @OrderBy("id ASC")
     @Fetch(FetchMode.SUBSELECT)
-    private List<AttachmentEntity> images = new ArrayList<>();
+    List<AttachmentEntity> images = new ArrayList<>();
 
 }

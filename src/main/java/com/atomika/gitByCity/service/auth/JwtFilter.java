@@ -20,19 +20,18 @@ import java.io.IOException;
 @AllArgsConstructor
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
-    private final JwtUserDetailsService userDetailsService;
-    private final TokenManager tokenManager;
+    private final CustomUserDetailsService userDetailsService;
+    private final JwtService jwtService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String tokenHeader = request.getHeader("Authorization");
         String username = null;
         String token = null;
-        // if bearer token is provided, get the username
         if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
             token = tokenHeader.substring(7);
             try {
-                username = tokenManager.getUsernameFromToken(token);
+                username = jwtService.getUsernameFromToken(token);
             }
             catch (IllegalArgumentException e) {
                 log.error("Unable to get JWT Token {}", e.getMessage());
@@ -45,10 +44,9 @@ public class JwtFilter extends OncePerRequestFilter {
             log.debug("Bearer String not found in token");
         }
 
-        // validate the JWT Token and create a new authentication token and set in security context
         if (username != null  && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            if (tokenManager.validateJwtToken(token, userDetails)) {
+            if (jwtService.validateJwtToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities()
                 );

@@ -1,6 +1,7 @@
-package com.atomika.gitByCity.controllers;
+package com.atomika.gitByCity.rest;
 
 import com.atomika.gitByCity.dto.Comment;
+import com.atomika.gitByCity.service.AuthorizationService;
 import com.atomika.gitByCity.service.CommentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/base/comments")
+@RequestMapping("base/comments")
 @AllArgsConstructor
 public class CommentController {
 
@@ -28,14 +29,14 @@ public class CommentController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Comment addComment(@RequestBody Comment comment) {
-        String clientName = AuthorizationController.getCurrentUsername();
+        String clientName = AuthorizationService.getCurrentUsername();
         return commentService.create(comment, clientName);
     }
 
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@commentService.isCreator(authentication.name,#comment.id)")
     public Comment updateComment(@RequestBody Comment comment) {
-        String clientName = AuthorizationController.getCurrentUsername();
+        String clientName = AuthorizationService.getCurrentUsername();
         return commentService.update(comment, clientName);
     }
 
@@ -44,5 +45,4 @@ public class CommentController {
     public Long deleteComment(@PathVariable("id") long id) {
         return commentService.delete(id);
     }
-
 }

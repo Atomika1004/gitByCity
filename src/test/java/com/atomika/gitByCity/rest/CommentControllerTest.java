@@ -1,4 +1,4 @@
-package com.atomika.gitByCity.controllers;
+package com.atomika.gitByCity.rest;
 
 import com.atomika.gitByCity.dto.Comment;
 import com.atomika.gitByCity.dto.Role;

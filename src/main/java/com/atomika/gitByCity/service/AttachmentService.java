@@ -3,7 +3,7 @@ package com.atomika.gitByCity.service;
 import com.atomika.gitByCity.configuration.MinioConfig;
 import com.atomika.gitByCity.dto.Attachment;
 import com.atomika.gitByCity.dto.mapper.AttachmentMapper;
-import com.atomika.gitByCity.exception.UploadImageException;
+import com.atomika.gitByCity.handler.exception.UploadImageException;
 import com.atomika.gitByCity.repositories.AttachmentRepository;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;

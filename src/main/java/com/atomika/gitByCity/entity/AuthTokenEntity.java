@@ -5,21 +5,24 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table(name = "admin")
+@Table(name = "auth_token")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AdminEntity {
-
+public class AuthTokenEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String fio;
+    String accessToken;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "credential_id")
-    CredentialEntity credential;
+    String refreshToken;
+
+    long successExpired;
+
+    long refreshExpired;
+
+    Long credentialId;
 }

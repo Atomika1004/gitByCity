@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class JwtRequest { // оптравление запроса на получение токена
+public class JwtRequest {
     private String username;
     private String password;
 }

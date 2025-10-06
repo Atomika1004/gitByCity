@@ -3,7 +3,7 @@ package com.atomika.gitByCity.service;
 
 import com.atomika.gitByCity.dto.Comment;
 import com.atomika.gitByCity.dto.mapper.CommentMapper;
-import com.atomika.gitByCity.exception.NotFoundException;
+import com.atomika.gitByCity.handler.exception.NotFoundException;
 import com.atomika.gitByCity.repositories.ClientRepository;
 import com.atomika.gitByCity.repositories.CommentRepository;
 
@@ -38,16 +38,16 @@ public class CommentService {
                 commentRepository.save(commentMapper.dtoToEntity(comment)));
     }
 
-
     //todo посмотрет потом //ошбика была в том что на уровне связей стояло nullable = false и из за этого не давало удалить
     @Transactional
     public Long delete(Long id) {
         if (commentRepository.existsById(id)) {
             commentRepository.deleteById(id);
             return id;
-        } else {
-            throw new NotFoundException("нет такого коммента" + id);
         }
+
+        throw new NotFoundException("нет такого коммента" + id);
+
     }
 
     @Transactional(readOnly = true)

@@ -7,7 +7,7 @@ import com.atomika.gitByCity.dto.mapper.RouteMapper;
 
 import com.atomika.gitByCity.entity.ClientEntity;
 import com.atomika.gitByCity.entity.RouteEntity;
-import com.atomika.gitByCity.exception.NotFoundException;
+import com.atomika.gitByCity.handler.exception.NotFoundException;
 import com.atomika.gitByCity.repositories.ClientRepository;
 import com.atomika.gitByCity.repositories.RouteRepository;
 import jakarta.persistence.EntityExistsException;

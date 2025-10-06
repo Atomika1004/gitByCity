@@ -1,4 +1,4 @@
-package com.atomika.gitByCity.controllers;
+package com.atomika.gitByCity.rest;
 
 import com.atomika.gitByCity.dto.Client;
 import com.atomika.gitByCity.service.ClientService;
@@ -12,15 +12,10 @@ import java.util.Date;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/base/client")
+@RequestMapping("base/client")
 public class BaseController {
 
     private final ClientService clientService;
-
-    @GetMapping("check")
-    public String sayHello() {
-        return "Hello" + new Date();
-    }
 
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("profile")

@@ -6,22 +6,20 @@ spring:
       enabled: always
   flyway:
     enabled: true
-
+    locations: classpath:db/migration
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     show-sql: true
     # properties:
     #   hibernate:
     #     format_sql: true
-
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/gitByCity1
     username: postgres
     password: 123
-
   servlet:
     multipart:
       enabled: true
@@ -32,8 +30,11 @@ server:
     context-path: /api
 
 token:
+  expired:
+    access: 6000000
+    refresh: 1296000000
   signing:
-    key: basebasebasebasebasebasebasebasebasebasebasebasebasebasebasebase
+    key: Xz0bPHhol9lXJiL47I4F1rZNAbYGvxohjhAfardW8ugWAoBVpJnSme8CaGyFA6Gy
 
 log4j:
   appender:

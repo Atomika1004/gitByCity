@@ -2,38 +2,41 @@ package com.atomika.gitByCity.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.Base64;
 
 @Entity
 @Table(name = "attachment")
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class AttachmentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    Long id;
 
     @ManyToOne
     @JoinColumn(name = "point_of_interest_id", nullable = true, updatable = false, insertable = false)
-    private PointOfInterestEntity pointOfInterest;
+    PointOfInterestEntity pointOfInterest;
 
     @Column(name = "point_of_interest_id")
-    private Long pointOfInterestId;
+    Long pointOfInterestId;
 
     @ManyToOne
     @JoinColumn(name = "route_id", nullable = true, updatable = false, insertable = false)
-    private RouteEntity route;
+    RouteEntity route;
 
     @Column(name = "route_id")
-    private Long routeId;
+    Long routeId;
 
     @Lob
     @Column(columnDefinition = "TEXT")
-    private String imageUrl;
+    String imageUrl;
 
 
 }

@@ -1,6 +1,5 @@
-package com.atomika.gitByCity.controllers;
+package com.atomika.gitByCity.rest;
 
-import com.atomika.gitByCity.GitByCityApplication;
 import com.atomika.gitByCity.dto.Role;
 import com.atomika.gitByCity.dto.Route;
 import com.atomika.gitByCity.dto.auth.SignInRequest;
@@ -11,13 +10,10 @@ import com.atomika.gitByCity.entity.PointOfInterestEntity;
 import com.atomika.gitByCity.repositories.CredentialRepository;
 import com.atomika.gitByCity.repositories.PointOfInterestRepository;
 import com.atomika.gitByCity.repositories.RouteRepository;
-import com.atomika.gitByCity.service.ClientService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 //import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;

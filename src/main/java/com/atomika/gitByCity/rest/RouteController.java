@@ -1,9 +1,8 @@
-package com.atomika.gitByCity.controllers;
+package com.atomika.gitByCity.rest;
 
 import com.atomika.gitByCity.dto.ResponseForCreateOrUpdate;
 import com.atomika.gitByCity.dto.Route;
-import com.atomika.gitByCity.entity.RouteEntity;
-import com.atomika.gitByCity.exception.NotFoundException;
+import com.atomika.gitByCity.service.AuthorizationService;
 import com.atomika.gitByCity.service.RouteService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +16,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/base/routes")
+@RequestMapping("base/routes")
 @Slf4j
 public class RouteController {
 
@@ -35,7 +34,7 @@ public class RouteController {
 
     @PostMapping()
     public ResponseForCreateOrUpdate addRoute(@RequestBody Route route) {
-        String clientName = AuthorizationController.getCurrentUsername();
+        String clientName = AuthorizationService.getCurrentUsername();
         return routeService.create(route, clientName);
     }
 

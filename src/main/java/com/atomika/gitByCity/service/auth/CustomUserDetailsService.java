@@ -7,12 +7,11 @@ import com.atomika.gitByCity.dto.auth.SignInResponse;
 import com.atomika.gitByCity.entity.ClientEntity;
 import com.atomika.gitByCity.entity.CredentialEntity;
 import com.atomika.gitByCity.entity.PasswordEntity;
-import com.atomika.gitByCity.exception.ExistsException;
+import com.atomika.gitByCity.handler.exception.ExistsException;
 import com.atomika.gitByCity.repositories.ClientRepository;
 import com.atomika.gitByCity.repositories.CredentialRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -22,13 +21,13 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class JwtUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     private final CredentialRepository credentialRepository;
     private final ClientRepository clientRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public AuthUser loadUserByUsername(String username) throws UsernameNotFoundException {
         CredentialEntity credential = credentialRepository.findByUsername(username).orElseThrow(
                 () -> new UsernameNotFoundException(String.format("User %s not found", username))
         );
@@ -38,6 +37,8 @@ public class JwtUserDetailsService implements UserDetailsService {
                 .password(credential.getPassword().getPassword())
                 .authorities(List.of(new SimpleGrantedAuthority(credential.getRole().name())))
                 .enabled(credential.isEnabled())
+                .credentialId(credential.getId())
+                .role(credential.getRole())
                 .build();
     }
 

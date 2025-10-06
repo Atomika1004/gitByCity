@@ -1,7 +1,8 @@
-package com.atomika.gitByCity.controllers;
+package com.atomika.gitByCity.rest;
 
 import com.atomika.gitByCity.dto.PointOfInterest;
 import com.atomika.gitByCity.dto.ResponseForCreateOrUpdate;
+import com.atomika.gitByCity.service.AuthorizationService;
 import com.atomika.gitByCity.service.PointOfInterestService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,7 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/base/points")
+@RequestMapping("base/points")
 public class PointOfInterestController {
 
     private final PointOfInterestService pointOfInterestService;
@@ -43,7 +44,7 @@ public class PointOfInterestController {
 
     @PostMapping()
     public ResponseEntity<?> createPointOfInterest(@RequestBody PointOfInterest pointOfInterest) {
-        String clientName = AuthorizationController.getCurrentUsername();
+        String clientName = AuthorizationService.getCurrentUsername();
         return new ResponseEntity<>(pointOfInterestService.create(pointOfInterest, clientName), HttpStatus.CREATED);
     }
 

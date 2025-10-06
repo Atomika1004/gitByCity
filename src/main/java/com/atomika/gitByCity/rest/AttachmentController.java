@@ -1,4 +1,4 @@
-package com.atomika.gitByCity.controllers;
+package com.atomika.gitByCity.rest;
 
 import com.atomika.gitByCity.dto.Attachment;
 import com.atomika.gitByCity.service.AttachmentService;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("api/base/image")
+@RequestMapping("image")
 @RequiredArgsConstructor
 public class AttachmentController {
 
