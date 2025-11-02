@@ -1,4 +1,4 @@
-package com.atomika.gitByCity.exception;
+package com.atomika.gitByCity.handler.exception;
 
 public class UploadImageException extends RuntimeException {
 

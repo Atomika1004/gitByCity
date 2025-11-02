@@ -63,5 +63,4 @@ public class CommentService {
     public boolean isCreator (String username, long commentId) {
         return commentRepository.isCreator(username, commentId);
     }
-
 }

@@ -4,20 +4,17 @@ import com.atomika.gitByCity.dto.Attachment;
 import com.atomika.gitByCity.service.AttachmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("image")
+@RequestMapping("/image")
 @RequiredArgsConstructor
 public class AttachmentController {
 
     private final AttachmentService attachmentService;
 
-    @PostMapping()
+    @PostMapping("/upload")
     public String uploadImage(@ModelAttribute final Attachment imageDto) {
         log.info("Uploading image {}", imageDto);
         return attachmentService.upload(imageDto);

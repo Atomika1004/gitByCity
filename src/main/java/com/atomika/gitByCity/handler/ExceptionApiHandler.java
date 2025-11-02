@@ -39,5 +39,4 @@ public class ExceptionApiHandler {
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(new ExceptionMessage(exception.getMessage()));
     }
-
 }

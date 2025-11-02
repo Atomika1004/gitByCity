@@ -33,6 +33,4 @@ public class PointOfInterestRouteEntity {
     Long routeId;
 
     int position;
-
 }
-

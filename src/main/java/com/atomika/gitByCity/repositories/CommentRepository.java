@@ -16,5 +16,4 @@ public interface CommentRepository extends JpaRepository<CommentEntity,Long> {
 
     @Query("SELECT COUNT(c) > 0  from CommentEntity c WHERE c.client.credential.username = :username AND c.id = :commentId")
     boolean isCreator(String username, long commentId);
-
 }

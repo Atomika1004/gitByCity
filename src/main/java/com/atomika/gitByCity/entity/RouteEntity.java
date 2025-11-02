@@ -61,5 +61,4 @@ public class RouteEntity {
     @OrderBy("id ASC")
     @Fetch(FetchMode.SUBSELECT)
     List<AttachmentEntity> images = new ArrayList<>();
-
 }

@@ -8,12 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-
 @RestController
 @AllArgsConstructor
 @RequestMapping("base/client")
-public class BaseController {
+public class ProfilesController {
 
     private final ClientService clientService;
 
@@ -29,5 +27,4 @@ public class BaseController {
     public Long getClientId() {
         return clientService.getClientId();
     }
-
 }

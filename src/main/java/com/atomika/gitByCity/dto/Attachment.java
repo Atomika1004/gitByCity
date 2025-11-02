@@ -10,9 +10,6 @@ import java.util.List;
 @Builder
 public class Attachment {
     private Long id;
-
     private Long pointOfInterestId;
-
     private MultipartFile image;
-
 }

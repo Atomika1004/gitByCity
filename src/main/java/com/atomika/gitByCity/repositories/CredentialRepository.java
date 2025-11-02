@@ -13,7 +13,7 @@ public interface CredentialRepository extends JpaRepository<CredentialEntity,Lon
     List<CredentialEntity> findAll();
 
     @Query("SELECT u FROM CredentialEntity u JOIN FETCH u.password WHERE u.username = :name")
-    Optional<CredentialEntity> findByUsername(String name);
+    Optional<CredentialEntity> findByUsername(@Param("name") String name);
 
     @Query("SELECT COUNT(u.email) > 0 FROM CredentialEntity u WHERE u.email = :email")
     boolean isExistEmailByUsername(@Param("email") String email);

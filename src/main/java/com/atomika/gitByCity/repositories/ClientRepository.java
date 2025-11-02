@@ -38,7 +38,4 @@ public interface ClientRepository extends JpaRepository<ClientEntity, Long> {
     WHERE credential.username = :username
 """)
     Optional<ClientEntity> findClientWithRelations1(String username);
-
-
-
 }

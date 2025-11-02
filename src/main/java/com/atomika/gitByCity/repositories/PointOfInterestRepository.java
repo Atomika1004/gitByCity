@@ -20,5 +20,4 @@ public interface PointOfInterestRepository extends CrudRepository<PointOfInteres
 
     @Query("SELECT p FROM PointOfInterestEntity p WHERE p.name = :name")
     PointOfInterestEntity findPointOfInterestEntityByName(String name);
-
 }

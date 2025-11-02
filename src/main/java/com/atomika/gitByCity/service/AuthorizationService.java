@@ -62,10 +62,10 @@ public class AuthorizationService {
     }
 
     public JwtResponse refreshToken(RefreshDto refreshDto) {
-        String currentUsername = getCurrentUsername();
         AuthTokenEntity authToken = getByRefreshToken(refreshDto.getToken());
-        if (authToken != null && currentUsername.equals(authToken.getRefreshToken())) {
-            AuthUser authUser = userDetailsService.loadUserByUsername(getCurrentUsername());
+        if (authToken != null) {
+            AuthUser authUser = userDetailsService.loadUserByUsername(
+                    jwtService.getUsernameFromToken(authToken.getAccessToken()));
             String accessToken = jwtService.generateJwtToken(authUser);
             String refreshToken = jwtService.generateRefreshToken();
             authTokenService.createOrUpdateAuthToken(accessToken, refreshToken);

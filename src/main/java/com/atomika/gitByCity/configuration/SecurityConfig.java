@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+
 import java.util.List;
 
 @Configuration
@@ -44,8 +45,12 @@ public class SecurityConfig {
                     return corsConfig;
                 }))
                 .csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(request -> request.requestMatchers("api/login", "api/registration", "api/test").permitAll()
-//                        .anyRequest().authenticated())
+                .authorizeHttpRequests(request ->
+                        request.requestMatchers("auth/**")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated()
+                )
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)

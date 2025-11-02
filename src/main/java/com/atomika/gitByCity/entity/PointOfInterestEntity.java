@@ -55,4 +55,3 @@ public class PointOfInterestEntity {
     @OneToMany(mappedBy = "pointOfInterest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<CommentEntity> comments = new ArrayList<>();
 }
-

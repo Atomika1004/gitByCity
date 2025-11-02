@@ -28,8 +28,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public AuthUser loadUserByUsername(String username) throws UsernameNotFoundException {
-        CredentialEntity credential = credentialRepository.findByUsername(username).orElseThrow(
-                () -> new UsernameNotFoundException(String.format("User %s not found", username))
+        CredentialEntity credential = credentialRepository.findByUsername(username)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException(
+                                String.format("User %s not found", username)
+                        )
         );
 
         return AuthUser.builder()

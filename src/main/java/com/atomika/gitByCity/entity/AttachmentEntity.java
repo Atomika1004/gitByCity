@@ -37,6 +37,4 @@ public class AttachmentEntity {
     @Lob
     @Column(columnDefinition = "TEXT")
     String imageUrl;
-
-
 }

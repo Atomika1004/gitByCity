@@ -40,5 +40,4 @@ public class CredentialEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     Role role;
-
 }
